@@ -1,0 +1,276 @@
+
+.footer-button{
+text-align:center;
+display: inline-table;
+}
+
+.page-form-footer {
+    position: fixed;
+}
+
+.ui-footer .ui-btn {
+display: inline-table;
+}
+
+.se-page {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    /* left: 100%; */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    overflow-x: hidden; 
+    overflow-y: auto;
+    /*
+    transition-property: left;
+    transition: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    */
+}
+
+.se-page-visible {
+    visibility: visible;
+    overflow-x: hidden;
+    overflow-y:scroll;
+    left: 0;
+    opacity: 1;
+    /*
+    transition-property: left;
+    transition: left 0.5s;
+    -moz-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    */
+}
+
+.se-page-left {
+    position: absolute;
+    /* left: -100%; */
+    opacity: 0;
+    /*
+    transition-property: left;
+    transition: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    */
+}
+
+.se-page #content {
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+    
+}
+
+.se-list-menu li {
+    background-color: #2ba6cb;
+    color: #ffffff;
+    list-style-type: none;
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    position: relative;
+}
+
+.se-list-menu li a {
+    color: #ffffff;
+    display: block;
+    padding-left: 20px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+/* Chevron at end of line */
+.se-list-menu > li > a::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    display: block;
+    float: right;
+
+    padding: 0px;
+    margin: 0px;
+    margin-top: -10px;
+    border-top: 5px solid #000;
+    border-right: 5px solid #000;
+    position: absolute;
+    top: 50%;
+    right: 5%;
+
+}
+
+/* Modal dialog */
+.se-notify,
+.se-modal {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	z-index: 99999;
+    transition-property: opacity;
+    transition: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+	opacity:0;
+	pointer-events: none;
+}
+
+.se-notify.visible,
+.se-modal.visible {
+    visibility: visible;
+	opacity:1;
+	pointer-events: auto;
+}
+
+.se-notify > #frame,
+.se-modal > #frame {
+	width: 50%;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+    border: 1px solid #000;
+	background: #ddd;
+}
+
+.se-modal #content {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.se-modal #content h3 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+
+#new-case-button {
+	margin-bottom: 10px;
+}
+
+.se-error-message {
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+    /*
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	z-index: 99999;
+    */
+    transition-property: opacity;
+    transition: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+	opacity:0;
+	pointer-events: none;
+}
+
+.se-error-message.active {
+    visibility: visible;
+    height: 40px;
+	opacity:1;
+	pointer-events: auto;
+    border: 1px, solid, #000;
+    padding: 10px;
+}
+
+.se-error-message.active.alarm {
+    background-color: #fee;
+    color: #c00;
+}
+
+/*---------------------------------------------------------------
+login dialog
+*/
+
+/* Styles for signup panels */
+#login-dialog {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+}
+
+#login-dialog.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.auth-plain {
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-top: 0px;
+}
+
+.left-solid {
+margin-top: 0px;
+margin-bottom: 0px;
+}
+
+.signup-panel {
+  border-radius: 5px;
+  padding: 15px;
+  /* margin-top: 30px;
+  margin-bottom: 30px;*/
+  background: #fff;
+    border: 1px solid #000;
+}
+
+.signup-panel a{
+  color: #fff;
+}
+
+.signup-panel i {
+  font-size: 30px;
+  line-height: 50px;
+  color: #999;
+}
+.signup-panel form input, .signup-panel form span {
+  height: 50px;
+}
+.signup-panel .welcome {
+  font-size: 26px;
+  text-align: center;
+  margin-left: 0;
+}
+.signup-panel p {
+  font-size: 13px;
+  font-weight: 200;
+  text-align: center;
+}
+.signup-panel .button {
+  margin-left: 35%;
+}
+           
+.edit-button {
+ font-size: 0.6875rem;
+  border: 0;
+  line-height: 1;
+  margin-bottom: inherit;
+  padding: 0.25rem 0.5rem 0.375rem;
+  cursor: pointer;
+  text-decoration: none !important;
+  display: inline-block;
+  background-color: #1f7994;
+  color: #ffffff !important;
+}
+

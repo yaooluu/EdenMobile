@@ -202,6 +202,6 @@
 
     };
     
-    app.commHandler = new communicator();
+    app.communicator = new communicator();
 
 })(jQuery, window, document);

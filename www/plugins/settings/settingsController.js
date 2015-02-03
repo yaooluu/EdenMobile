@@ -33,10 +33,15 @@
         var pageElement = this._page.$el;
         this._page.controller(this);
         
+                
+        $("#reset-button").on("click",this.onReset.bind(this));
+        $("#load-form-list-button").on("click",this.onLoad.bind(this));
+        $("#debug-button").on("click",this.onDebug.bind(this));
+
     };
     
     controller.prototype.onLoad = function(evt) {
-        //console.log("settings controller onLoad");
+        app.onLoad();
     };
     
     controller.prototype.onReset = function(evt) {

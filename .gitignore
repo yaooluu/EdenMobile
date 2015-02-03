@@ -2,3 +2,5 @@
 /plugins
 /hooks
 .cordova
+www/manifest.json
+www/chrome-background.js

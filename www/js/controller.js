@@ -134,6 +134,8 @@
         return this._online;
     }
 
+    controller.prototype.pingServer = function () {
+    }
 
     //-------------------------------------------------------------------------
     //
@@ -150,7 +152,7 @@
                 this._updateState.active = true;
                 app.view.notifyMessage("Loading...", "Loading forms.");
                 var path = pluginController.updatePath(type);
-                var id = app.commHandler.requestData(path);
+                var id = app.communicator.requestData(path);
 
                 if (!id) {
                     this.online(false);
@@ -227,7 +229,7 @@
                 var data = model.sendData();
                 var pluginController = this.getControllerByModel(type);
                 path += pluginController.submitPath(type);
-                var id = app.commHandler.submitData(path, this.cbSubmitData.bind(this), data);
+                var id = app.communicator.submitData(path, this.cbSubmitData.bind(this), data);
 
                 if (!id) {
                     this.online(false);
@@ -331,7 +333,7 @@
         console.log("controller login");
         var url = params["url"] + config.defaults.loginPath;
         //app.view.notifyMessage("Loading...","Loading forms.");
-        app.commHandler.requestLogin(url, params, this.cbLogin.bind(this));
+        app.communicator.requestLogin(url, params, this.cbLogin.bind(this));
 
     };
 

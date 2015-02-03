@@ -19,7 +19,7 @@
 //  THE SOFTWARE.
 
 var app = {
-    commHandler: null,
+    communicator: null,
     controller: null,
     view: null,
     storage: null,
@@ -78,10 +78,6 @@ var app = {
         window.addEventListener('online',this.onOnline.bind(this));
         window.addEventListener('offline',this.onOffline.bind(this));
         
-        $("#reset-button").on("click",this.onReset.bind(this));
-        $("#load-form-list-button").on("click",this.onLoad.bind(this));
-        $("#debug-button").on("click",this.onDebug.bind(this));
-        
     },
     
     onDynamicUIComplete: function() {
@@ -92,12 +88,13 @@ var app = {
     
 
     onLoad: function() {
-        this.controller.loadForm();
+        //this.controller.loadForm();
+        this.controller.pingServer();
     },
     
     onDebug: function() {
         var serverURL = this.state.settings.serverInfo.get("url");
-        this.commHandler.sendForm(serverURL);  
+        this.communicator.sendForm(serverURL);  
     },
     
     onReset: function() {
@@ -150,3 +147,6 @@ app.testmodule = (function() {
     return my;
 }());
 */
+
+// Do this for chrome app            if (window.chrome && chrome.runtime && chrome.runtime.id) {
+

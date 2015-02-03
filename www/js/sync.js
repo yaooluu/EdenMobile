@@ -35,7 +35,7 @@ Backbone.sync = function(method, model, options) {
         }
         else {
             var controller = app.controller;
-            app.commHandler.sendModel(model,controller.cbFormSendComplete.bind(controller), options);
+            app.communicator.sendModel(model,controller.cbFormSendComplete.bind(controller), options);
         }
         //localStorage.setItem(path,JSON.stringify(model));
     break;
@@ -43,7 +43,7 @@ Backbone.sync = function(method, model, options) {
     case 'update':
         console.log('update');
         //localStorage.setItem(path,JSON.stringify(model));
-        app.commHandler.sendModel(model,
+        app.communicator.sendModel(model,
                                   app.controller.cbFormSendComplete.bind(app.controller), 
                                   options);
     break;

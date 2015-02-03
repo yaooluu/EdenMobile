@@ -4,6 +4,7 @@ var config = {
     debugNoCommTimeout: false,
     defaults: {
         url: "http://demo.eden.sahanafoundation.org/eden",
+        pingPath: "/static/robots.txt",
         loginPath: "/default/user/login"  // TODO: this doesn't work
     },
     mainMenu: [

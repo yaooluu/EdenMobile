@@ -26,14 +26,87 @@
 
     // The actual plugin constructor
     function communicator() {
-
-        this.init();
-        this._commId = 1;
-    };
-
-    communicator.prototype.init = function () {
+        this._commId = 0;
     };
     
+    communicator.prototype.newId = function() {
+        //this._commId++;
+        return ++this._commId;
+    };
+
+    
+    communicator.prototype.ping = function(url, callback) {
+        
+        //--------------------------------------------------------
+        // State variables
+
+        var status = true;
+        var xhr = new XMLHttpRequest();
+        var id = this.newId();
+        var type = "GET";
+        
+        //--------------------------------------------------------
+        // Callbacks
+        
+        function onTimeout() {
+            console.log("newRequestData: onTimeout");
+            callback(id,false);
+        };
+        
+        function onLoad(reply) {
+            console.log("newRequestData: onLoad: " + id + " " + xhr.readyState + " " + xhr.status);
+            var returnStatus = true;
+            var message = reply.target.responseText;
+            if (xhr.status != 200) {
+                //callback(false, "Server error");
+                //return;
+                returnStatus = false;
+                message = "Server Error";
+            }
+
+            if (callback) {
+                //console.log("\tthat is interesting...");
+                callback(returnStatus);
+            }
+        }
+        
+        function onError(reply) {
+            console.log("newRequestData: onError");
+        }
+        
+        function onReadyStateChange(reply) {
+            console.log("newRequestData: onReadyStateChange: " + xhr.readyState + " " + xhr.status);
+        }
+        
+        //--------------------------------------------------------
+        // Main call code
+        
+         // create authentication
+        var username = app.state.settings.serverInfo.get("username");
+        var password = app.state.settings.serverInfo.get("password");
+        var authentication = 'Basic ' + window.btoa(username + ':' + password);
+        
+        console.log("sending " + id);
+        xhr.onload = onLoad;
+        xhr.ontimeout = onTimeout;
+        xhr.timeout = REQ_WAIT_TIME;
+        xhr.onerror = onError;
+        //xhr.onreadystatechange = onReadyStateChange;
+        xhr.open(type, url, true);
+        xhr.setRequestHeader('Authorization', authentication);
+
+        try {
+            xhr.send();
+        }
+        catch (err) {
+            status = false;
+        }
+        if (!status) {
+            id = 0;
+        }
+        return id;
+    };
+
     communicator.prototype.newRequestData = function(type, url, callback, data) {
         
         //--------------------------------------------------------
@@ -41,8 +114,7 @@
 
         var status = true;
         var xhr = new XMLHttpRequest();
-        var id = this._commId;
-        this._commId++;
+        var id = this.newId();
         
         //--------------------------------------------------------
         // Callbacks

@@ -88,8 +88,8 @@ var app = {
     
 
     onLoad: function() {
-        //this.controller.loadForm();
         this.controller.pingServer();
+        //this.controller.updateAll();
     },
     
     onDebug: function() {

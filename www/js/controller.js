@@ -135,6 +135,17 @@
     }
 
     controller.prototype.pingServer = function () {
+        var path = this.getHostURL() + config.defaults.pingPath;
+        app.communicator.ping(path, this.cbPingServer.bind(this));
+    }
+    
+    controller.prototype.cbPingServer = function (status) {
+        if (status) {
+            this.online(true);
+        }
+        else {
+            this.online(false);
+        }
     }
 
     //-------------------------------------------------------------------------

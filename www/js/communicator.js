@@ -28,31 +28,29 @@
     function communicator() {
         this._commId = 0;
     };
-    
-    communicator.prototype.newId = function() {
+
+    communicator.prototype.newId = function () {
         //this._commId++;
         return ++this._commId;
     };
 
-    
-    communicator.prototype.ping = function(url, callback) {
-        
+    communicator.prototype.newRequestData = function (type, url, callback, data) {
+
         //--------------------------------------------------------
         // State variables
 
         var status = true;
         var xhr = new XMLHttpRequest();
         var id = this.newId();
-        var type = "GET";
-        
+
         //--------------------------------------------------------
         // Callbacks
-        
+
         function onTimeout() {
             console.log("newRequestData: onTimeout");
-            callback(id,false);
+            callback(id, false, "Server not responding");
         };
-        
+
         function onLoad(reply) {
             console.log("newRequestData: onLoad: " + id + " " + xhr.readyState + " " + xhr.status);
             var returnStatus = true;
@@ -66,26 +64,26 @@
 
             if (callback) {
                 //console.log("\tthat is interesting...");
-                callback(returnStatus);
+                callback(id, returnStatus, message);
             }
         }
-        
+
         function onError(reply) {
             console.log("newRequestData: onError");
         }
-        
+
         function onReadyStateChange(reply) {
             console.log("newRequestData: onReadyStateChange: " + xhr.readyState + " " + xhr.status);
         }
-        
+
         //--------------------------------------------------------
         // Main call code
-        
-         // create authentication
+
+        // create authentication
         var username = app.state.settings.serverInfo.get("username");
         var password = app.state.settings.serverInfo.get("password");
         var authentication = 'Basic ' + window.btoa(username + ':' + password);
-        
+
         console.log("sending " + id);
         xhr.onload = onLoad;
         xhr.ontimeout = onTimeout;
@@ -95,85 +93,13 @@
         xhr.open(type, url, true);
         xhr.setRequestHeader('Authorization', authentication);
 
-        try {
-            xhr.send();
-        }
-        catch (err) {
-            status = false;
-        }
-        if (!status) {
-            id = 0;
-        }
-        return id;
-    };
-
-    communicator.prototype.newRequestData = function(type, url, callback, data) {
-        
-        //--------------------------------------------------------
-        // State variables
-
-        var status = true;
-        var xhr = new XMLHttpRequest();
-        var id = this.newId();
-        
-        //--------------------------------------------------------
-        // Callbacks
-        
-        function onTimeout() {
-            console.log("newRequestData: onTimeout");
-            callback(id,false,"Server not responding");
-        };
-        
-        function onLoad(reply) {
-            console.log("newRequestData: onLoad: " + id + " " + xhr.readyState + " " + xhr.status);
-            var returnStatus = true;
-            var message = reply.target.responseText;
-            if (xhr.status != 200) {
-                //callback(false, "Server error");
-                //return;
-                returnStatus = false;
-                message = "Server Error";
-            }
-
-            if (callback) {
-                //console.log("\tthat is interesting...");
-                callback(id,returnStatus,message);
-            }
-        }
-        
-        function onError(reply) {
-            console.log("newRequestData: onError");
-        }
-        
-        function onReadyStateChange(reply) {
-            console.log("newRequestData: onReadyStateChange: " + xhr.readyState + " " + xhr.status);
-        }
-        
-        //--------------------------------------------------------
-        // Main call code
-        
-         // create authentication
-        var username = app.state.settings.serverInfo.get("username");
-        var password = app.state.settings.serverInfo.get("password");
-        var authentication = 'Basic ' + window.btoa(username + ':' + password);
-        
-        console.log("sending " + id);
-        xhr.onload = onLoad;
-        xhr.ontimeout = onTimeout;
-        xhr.timeout = REQ_WAIT_TIME;
-        xhr.onerror = onError;
-        //xhr.onreadystatechange = onReadyStateChange;
-        xhr.open(type, url, true);
-        xhr.setRequestHeader('Authorization', authentication);
-        
         if (data === undefined) {
             data = null;
         }
 
         try {
             xhr.send(data);
-        }
-        catch (err) {
+        } catch (err) {
             status = false;
         }
         if (!status) {
@@ -184,29 +110,34 @@
 
 
     communicator.prototype.requestData = function (url) {
-        return this.newRequestData("GET",url,app.controller.cbUpdateData.bind(app.controller));
+        return this.newRequestData("GET", url, app.controller.cbUpdateData.bind(app.controller));
     };
 
 
-    communicator.prototype.submitData = function (url, cb,  data) {
-        return this.newRequestData("PUT",url,cb,data);
+    communicator.prototype.submitData = function (url, cb, data) {
+        return this.newRequestData("PUT", url, cb, data);
     };
 
-    
+    communicator.prototype.ping = function (url, cb) {
+        return this.newRequestData("GET", url, cb);
+    };
+
+
     communicator.prototype.requestLogin = function (url, params, cb) {
         //var formListURL = url;  // don't need to do anything here
         reqState.type = "login";
         reqState.callback = cb;
         xhr.onload = this.cbRequestLogin.bind(this);
         var boundary = '----WebKitFormBoundaryB94vneooSYjS9yn6';
-        var sendText = '--' + boundary + '\r\n' + 
-                        'Content-Disposition: form-data; name="email"\r\n' + 
-                        '\r\n' +                         
-                        'tombaker1@gmail.com\r\n' + 
-                        '--' + boundary + '\r\n' +
-                        'Content-Disposition: form-data; name="password"\r\n' + 
-                        '\r\n' + 
-                        'eden\r\n' + /* + 
+        var sendText = '--' + boundary + '\r\n' +
+            'Content-Disposition: form-data; name="email"\r\n' +
+            '\r\n' +
+            'tombaker1@gmail.com\r\n' +
+            '--' + boundary + '\r\n' +
+            'Content-Disposition: form-data; name="password"\r\n' +
+            '\r\n' +
+            'eden\r\n' +
+            /* + 
                         '------WebKitFormBoundaryB94vneooSYjS9yn6\r\n' + 
                         'Content-Disposition: form-data; name="_next"\r\n' + 
                         '\r\n' +
@@ -223,7 +154,7 @@
                         'Content-Disposition: form-data; name="_utc_offset"\r\n' + 
                         '\r\n' + 
                         '480\r\n' + */
-                        '--' + boundary + '--\r\n';
+            '--' + boundary + '--\r\n';
         var newURL = url; // + "?_next=%2Feden%2Fdefault%2Findex";
         xhr.open("POST", newURL, true);
         xhr.setRequestHeader("Content-Type", 'multipart/form-data; boundary=' + boundary);
@@ -249,11 +180,11 @@
         var rawData = reply.target.responseText;
         var allResponses = xhr.getAllResponseHeaders();
         var index = rawData.indexOf('class="alert');
-        var success = rawData.slice(index,index+8);
-        
+        var success = rawData.slice(index, index + 8);
+
         if (success.indexOf("alert-success")) {
             message = "Login succeeded";
-            }
+        }
         //var responseText = xhr.getResponseHeader("SetCookie");
         //var allResponses = xhr.getAllResponseHeaders();
         //
@@ -273,7 +204,7 @@
         reqState.callback(status, message);
 
     };
-    
+
     app.communicator = new communicator();
 
 })(jQuery, window, document);

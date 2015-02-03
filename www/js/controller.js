@@ -139,7 +139,7 @@
         app.communicator.ping(path, this.cbPingServer.bind(this));
     }
     
-    controller.prototype.cbPingServer = function (status) {
+    controller.prototype.cbPingServer = function (id, status, rawData) {
         if (status) {
             this.online(true);
         }

@@ -22,22 +22,6 @@
 ;
 (function ($, window, document, undefined) {
     
-    var mParent = app.controller.getModel("mFormData");
-        var mSettingsData = mParent.extend({
-        initialize: function (options) {
-            mParent.prototype.initialize.call(this, arguments);
-
-            this._type = "settings";
-            this._person = null;
-        },
-            
-            stuff: function(msg) {
-                console.log("stuff: " + msg);
-            }
-        });
-    app.controller.addModel({"mSettingsData": mSettingsData});
-        app.pluginManager.addObject(mSettingsData);
-
 
     // The actual plugin constructor
     function controller() {
@@ -67,10 +51,7 @@
     };
     
     controller.prototype.onDebug = function(evt) {
-        //app.onDebug();
-        var obj = app.controller.getModel("mSettingsData");
-        var x = new obj({name: "my name"});
-        x.stuff("Print some stuff!!!");
+        app.onDebug();
     };
 
     app.pluginManager.addObject(controller);

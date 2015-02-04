@@ -42,6 +42,7 @@
 
         // Add all of the static pages
         var pages = $("div[id^='page-']");
+        var pageView = this.getPage("pageView");
         for (i = 0; i < pages.length; i++) {
             var el = pages[i];
             var name = $(pages[i]).attr("id");
@@ -56,7 +57,9 @@
     view.prototype.addPage = function (name, page) {
         if (page) {
             this.pageSet[name] = page;
-            page.on("navigate", this.changePage.bind(this));
+            if (typeof page.on === 'function') {
+                page.on("navigate", this.changePage.bind(this));
+            }
         }
     };
 

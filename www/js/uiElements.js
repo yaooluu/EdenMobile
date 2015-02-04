@@ -19,6 +19,8 @@
 //  THE SOFTWARE.
 
 
+;(function ( $, window, document, undefined ) {
+
 // This is used for the main page
 
 var pageView = Backbone.View.extend({
@@ -207,3 +209,10 @@ var loginDialog= Backbone.View.extend({
         console.log("login dialog error " + message);
     }
 });
+    
+    app.view.addPage("pageView",pageView);
+    app.view.addPage("confirmDialog",confirmDialog);
+    app.view.addPage("loginDialog",loginDialog);
+    
+
+})( jQuery, window, document );

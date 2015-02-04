@@ -56,6 +56,7 @@ var app = {
         this.state.settings.serverInfo = new userInfo();
         this.getState();
         this.view.init();
+        var loginDialog = this.view.getPage("loginDialog");
         this.loginDialog = new loginDialog();
         //this.controller.init({state: this.state});
         this.pluginManager.init();

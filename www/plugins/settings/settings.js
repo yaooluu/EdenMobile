@@ -23,7 +23,7 @@
 ;
 (function ($, window, document, undefined) {
     
-    var settingsPage = Backbone.View.extend({ //pageView.extend({
+    var settingsPage = Backbone.View.extend({ 
     tagName: "div",
     className: "se-page",
     name: "",
@@ -56,7 +56,6 @@
         "change #password": "onPassword"
     },
     initialize: function (options) {
-        //pageView.prototype.initialize.apply(this,[options]);
         //console.log("page initialize " + this.position);
 
         this._controller = null;

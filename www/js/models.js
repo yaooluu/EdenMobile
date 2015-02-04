@@ -19,7 +19,6 @@
 //  THE SOFTWARE.
 
 ;(function ( $, window, document, undefined ) {
-})( jQuery, window, document );
     
 
 var userInfo = Backbone.Model.extend({
@@ -132,5 +131,10 @@ var mFormData = Backbone.Model.extend({
 
 
 });
+    
+    app.controller.addModel({ "userInfo":userInfo,
+                             "formType":formType,
+                             "mFormData":mFormData});
 
 
+})( jQuery, window, document );

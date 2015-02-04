@@ -52,6 +52,7 @@ var app = {
         this.bind();
 
         this.storage.init();
+        var userInfo = this.controller.getModel("userInfo");
         this.state.settings.serverInfo = new userInfo();
         this.getState();
         this.view.init();
@@ -93,8 +94,7 @@ var app = {
     },
     
     onDebug: function() {
-        var serverURL = this.state.settings.serverInfo.get("url");
-        this.communicator.sendForm(serverURL);  
+        console.log("app:onDebug");
     },
     
     onReset: function() {

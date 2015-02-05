@@ -26,6 +26,7 @@
 
 
     var pageView = Backbone.View.extend({
+        content_template: null,
         events: {
             "click #link-button": "navigate"
         },
@@ -38,6 +39,19 @@
             this.name = options["name"];
             if (options["back"] === false) {
                 this.back = false;
+            }
+            
+            this._controller = null;
+            var content = options["content"];
+            if (content) {
+                this.setContent(content);
+            }
+
+        },
+
+        setContent: function (content) {
+            if (content) {
+                this.content_template = _.template(content);
             }
         },
 

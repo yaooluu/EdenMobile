@@ -31,15 +31,16 @@
 
     controller.prototype.init = function (options) {
         //console.log("settings controller init");
-        this._page = app.view.getPage("page-settings");
-        var pageElement = this._page.$el;
-        this._page.controller(this);
+        //this._page = app.view.getPage("page-settings");
+        //var pageElement = this._page.$el;
+        //this._page.controller(this);
         
                 
         $("#reset-button").on("click",this.onReset.bind(this));
         $("#load-form-list-button").on("click",this.onLoad.bind(this));
         $("#debug-button").on("click",this.onDebug.bind(this));
 
+        app.controller.setControllerByModel("settings", this);
     };
     
     controller.prototype.onLoad = function(evt) {

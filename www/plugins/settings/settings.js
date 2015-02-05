@@ -22,170 +22,172 @@
 
 ;
 (function ($, window, document, undefined) {
-    
-    var settingsPage = Backbone.View.extend({ 
-    tagName: "div",
-    className: "se-page",
-    name: "",
-    template: _.template(
-        "<div class='fixed'>" +
-        "<div class='row'>" +
-        "<nav class='top-bar' data-topbar=' '>" +
-        "<ul class='itle-area'>" +
-        "<li class='name'>" +
-        "<h1><a id='link-button' link='page-back'>< Back</a></h1>" +
-        "</li>" +
-        "</li>" +
-        "</ul>" +
-        "</nav>" +
-        "</div>" +
-        "</div>" + 
-        "<div id='content'>" + 
-        "</div>"
-    ),
-    content_template: null,
-    events: {
-        "click #link-button": "navigate",
-        
-        "click #load-form-list-button": "onLoad",
-        "click #reset-button": "onReset",
-        "click #debug-button": "onDebug",
-        
-        "change #serverURL": "onURL",
-        "change #username": "onUsername",
-        "change #password": "onPassword"
-    },
-    initialize: function (options) {
-        //console.log("page initialize " + this.position);
 
-        this._controller = null;
-        var content = options["content"];
-        if (content) {
-            this.setContent(content);
-        }
-        var name = options["name"];
-        if (name) {
-            this.name = name;
-        }
-    },
-        
-    setContent: function (content) {
-        if (content) {
-            this.content_template = _.template(content);
-        }
-    },
-        
-    controller: function(obj) {
-        if (obj) {
-            this._controller = obj;
-        }
-        return this._controller;
-    }, 
-        
-    render: function () {
-        this.$el.html(this.template({}));
-        this.$el.attr({
-            "id": this.name
-        });
-        if (this.content_template) {
-            this.$el.find("#content").append(this.content_template({}));
-        }
-        
-        // Initialize values
-        this.undelegateEvents();
-        this.$("#version").html("Version: " + config.version);
-        this.serverURL(app.state.settings.serverInfo.get("url"));
-        this.username(app.state.settings.serverInfo.get("username"));
-        this.password(app.state.settings.serverInfo.get("password"));
-        this.delegateEvents();
-        //this.on("change #serverURL", this.onURL.bind(this));
-        //this.on("change #username", this.onUsername.bind(this));
-        //this.on("change #password", this.onPassword.bind(this));
-        return this; 
-    },
+    var pageView = app.view.getPage("pageView");
+    var settingsPage = pageView.extend({
+        tagName: "div",
+        className: "se-page",
+        name: "",
+        template: _.template(
+            "<div class='fixed'>" +
+            "<div class='row'>" +
+            "<nav class='top-bar' data-topbar=' '>" +
+            "<ul class='itle-area'>" +
+            "<li class='name'>" +
+            "<h1><a id='link-button' link='page-back'>< Back</a></h1>" +
+            "</li>" +
+            "</li>" +
+            "</ul>" +
+            "</nav>" +
+            "</div>" +
+            "</div>" +
+            "<div id='content'>" +
+            "</div>"
+        ),
+        //content_template: null,
+        events: {
+            //"click #link-button": "navigate",
 
-    serverURL: function(url) {
-        var $input = this.$('#serverURL');
-        if (typeof url != 'undefined') {
-            $input.val(url);
-        }
-        else {
-            url = $input.val();
-        }
-        return url;
-    },
-    
-    username: function(name) {
-        var $input = this.$('#username');
-        if (typeof name != 'undefined') {
-            $input.val(name);
-        }
-        else {
-            name = $input.val();
-        }
-        return name;
-    },
-    
-    password: function(pwd) {
-        var $input = this.$('#password');
-        if (typeof pwd != 'undefined') {
-            $input.val(pwd);
-        }
-        else {
-            pwd = $input.val();
-        }
-        return pwd;
-    },
+            "click #load-form-list-button": "onLoad",
+            "click #reset-button": "onReset",
+            "click #debug-button": "onDebug",
 
-    navigate: function (event) {
-        var target = event.currentTarget;
-        var path = $(target).attr("link");
-        this.trigger("navigate", path);
-        //console.log("navigate " + path);
-    },
+            "change #serverURL": "onURL",
+            "change #username": "onUsername",
+            "change #password": "onPassword"
+        },
+        initialize: function (options) {
+            //console.log("page initialize " + this.position);
+            pageView.prototype.initialize.call(this, options);
 
-    onLoad: function (event) {
-        console.log("onLoad ");
-        if (this._controller) {
-            this._controller.onLoad();
+            //this._controller = null;
+            //var content = options["content"];
+            //if (content) {
+            //    this.setContent(content);
+            //}
+            //var name = options["name"];
+            //if (name) {
+            //    this.name = name;
+            //}
+        },
+
+/*
+        setContent: function (content) {
+            if (content) {
+                this.content_template = _.template(content);
+            }
+        },
+
+        controller: function (obj) {
+            if (obj) {
+                this._controller = obj;
+            }
+            return this._controller;
+        },
+*/
+        render: function () {
+            this.$el.html(this.template({}));
+            this.$el.attr({
+                "id": this.name
+            });
+            if (this.content_template) {
+                this.$el.find("#content").append(this.content_template({}));
+            }
+
+            // Initialize values
+            this.undelegateEvents();
+            this.$("#version").html("Version: " + config.version);
+            this.serverURL(app.state.settings.serverInfo.get("url"));
+            this.username(app.state.settings.serverInfo.get("username"));
+            this.password(app.state.settings.serverInfo.get("password"));
+            this.delegateEvents();
+            //this.on("change #serverURL", this.onURL.bind(this));
+            //this.on("change #username", this.onUsername.bind(this));
+            //this.on("change #password", this.onPassword.bind(this));
+            return this;
+        },
+
+        serverURL: function (url) {
+            var $input = this.$('#serverURL');
+            if (typeof url != 'undefined') {
+                $input.val(url);
+            } else {
+                url = $input.val();
+            }
+            return url;
+        },
+
+        username: function (name) {
+            var $input = this.$('#username');
+            if (typeof name != 'undefined') {
+                $input.val(name);
+            } else {
+                name = $input.val();
+            }
+            return name;
+        },
+
+        password: function (pwd) {
+            var $input = this.$('#password');
+            if (typeof pwd != 'undefined') {
+                $input.val(pwd);
+            } else {
+                pwd = $input.val();
+            }
+            return pwd;
+        },
+
+        navigate: function (event) {
+            var target = event.currentTarget;
+            var path = $(target).attr("link");
+            this.trigger("navigate", path);
+            //console.log("navigate " + path);
+        },
+
+        onLoad: function (event) {
+            console.log("onLoad ");
+            var controller = app.controller.getControllerByModel("settings");
+            if (controller) {
+                controller.onLoad();
+            }
+        },
+
+        onReset: function (event) {
+            console.log("onReset ");
+            if (this._controller) {
+                this._controller.onReset();
+            }
+        },
+
+        onDebug: function (event) {
+            console.log("onDebug ");
+            if (this._controller) {
+                this._controller.onDebug();
+            }
+        },
+
+        onURL: function (event) {
+            console.log("onURL ");
+            app.state.settings.serverInfo.set("url", event.target.value);
+        },
+
+        onUsername: function (event) {
+            console.log("onUsername ");
+            app.state.settings.serverInfo.set("username", event.target.value);
+        },
+
+        onPassword: function (event) {
+            console.log("onPassword ");
+            app.state.settings.serverInfo.set("password", event.target.value);
+        },
+/*
+        setEvents: function () {
+            this.delegateEvents();
         }
-    },
+        */
+    });
 
-    onReset: function (event) {
-        console.log("onReset ");
-        if (this._controller) {
-            this._controller.onReset();
-        }
-    },
 
-    onDebug: function (event) {
-        console.log("onDebug ");
-        if (this._controller) {
-            this._controller.onDebug();
-        }
-    },
-
-    onURL: function (event) {
-        console.log("onURL ");
-        app.state.settings.serverInfo.set("url",event.target.value);
-    },
-
-    onUsername: function (event) {
-        console.log("onUsername ");
-        app.state.settings.serverInfo.set("username",event.target.value);
-    },
-
-    onPassword: function (event) {
-        console.log("onPassword ");
-        app.state.settings.serverInfo.set("password",event.target.value);
-    },
-    
-    setEvents: function() {
-        this.delegateEvents();
-    }
-});
-    
-    
     app.pluginManager.addObject(settingsPage);
-    
+
 })(jQuery, window, document);

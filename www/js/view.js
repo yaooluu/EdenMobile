@@ -115,7 +115,7 @@
         }
 
     };
-
+/*
     view.prototype.newSavedFormItem = function (options) {
         //console.log("jqm-view newSavedFormItem");
 
@@ -145,7 +145,7 @@
         this.savedFormArray.splice(index, 1);
         return true;
     };
-
+*/
     view.prototype.getModelData = function (page, model) {
         //var form = page.model;
         //var formData = form.get("form");

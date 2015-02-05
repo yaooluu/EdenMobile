@@ -44,7 +44,7 @@
             "<div id='content'>" +
             "</div>"
         ),
-        //content_template: null,
+        //_content_template: null,
         events: {
             //"click #link-button": "navigate",
 
@@ -57,13 +57,13 @@
             "change #password": "onPassword"
         },
         initialize: function (options) {
-            //console.log("page initialize " + this.position);
-            pageView.prototype.initialize.call(this, options);
+            console.log("initialize settings");
+            //pageView.prototype.initialize.call(this, options);
 
             //this._controller = null;
             //var content = options["content"];
             //if (content) {
-            //    this.setContent(content);
+            //    this.content(content);
             //}
             //var name = options["name"];
             //if (name) {
@@ -72,9 +72,9 @@
         },
 
 /*
-        setContent: function (content) {
+        content: function (content) {
             if (content) {
-                this.content_template = _.template(content);
+                this._content_template = _.template(content);
             }
         },
 
@@ -90,8 +90,8 @@
             this.$el.attr({
                 "id": this.name
             });
-            if (this.content_template) {
-                this.$el.find("#content").append(this.content_template({}));
+            if (this.content()) {
+                this.$el.find("#content").append((this.content())({}));
             }
 
             // Initialize values

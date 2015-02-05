@@ -26,14 +26,17 @@
 
 
     var pageView = Backbone.View.extend({
-        content_template: null,
+        
         events: {
             "click #link-button": "navigate"
         },
 
-        initialize: function (options) {
-            console.log("new pageView ");
-            this.index = -1;
+    constructor: function(options) {
+        console.log("pageView constructor");
+        
+        // Create and initialize state
+        this._content_template = null; 
+                  this.index = -1;
             this.back = true;
             this.position = 1;
             this.name = options["name"];
@@ -41,18 +44,26 @@
                 this.back = false;
             }
             
-            this._controller = null;
-            var content = options["content"];
-            if (content) {
-                this.setContent(content);
+            var contentTemplate = options["content"];
+            if (contentTemplate) {
+                this.content(contentTemplate);
             }
+        
+        // Call the original constructor
+        Backbone.View.apply(this, arguments);
+    },
+    
+        initialize: function (options) {
+            console.log("initialize pageView");
+  
 
         },
 
-        setContent: function (content) {
-            if (content) {
-                this.content_template = _.template(content);
+        content: function (contentTemplate) {
+            if (contentTemplate) {
+                this._content_template = _.template(contentTemplate);
             }
+            return this._content_template;
         },
 
         navigate: function (event) {
@@ -100,9 +111,9 @@
     var mainPage = pageView.extend({
 
         initialize: function (options) {
-            pageView.prototype.initialize.call(this, options);
+            //pageView.prototype.initialize.call(this, options);
 
-            console.log("new mainPage ");
+            console.log("initialize mainPage ");
             // search the dom to see if the page is already there
             var element = $("#" + this.name);
             if (element) {

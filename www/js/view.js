@@ -41,16 +41,10 @@
         this.on("navigate", this.changePage.bind(this));
 
         // Add all of the static pages
-        var pages = $("div[id^='page-']");
-        var pageView = this.getPage("pageView");
-        for (i = 0; i < pages.length; i++) {
-            var el = pages[i];
-            var name = $(pages[i]).attr("id");
-            var page = new pageView({
-                "name": name
-            });
-            this.addPage(name, page);
-        }
+        var pageObj = this.getPage("mainPage");
+        var name = "page-home";
+        var page = new pageObj({"name": name});
+        this.addPage(name, page);
         this.pageStack.push(this.pageSet["page-home"]);
     };
 
@@ -66,14 +60,14 @@
     view.prototype.getPage = function (name) {
         return this.pageSet[name];
     };
-    
- 
+
+
     view.prototype.getVisiblePage = function () {
         var len = this.pageStack.length;
         if (len <= 0) {
             return;
         }
-        return this.pageStack[len-1];
+        return this.pageStack[len - 1];
     };
 
     view.prototype.changePage = function (pageName) {
@@ -114,9 +108,9 @@
             currentVisiblePage.$el.remove();
             var topBar = newActive.$el.find(".top-bar");
             if (topBar) {
-                
+
                 topBar.removeClass("expanded");
-                topBar.foundation(); 
+                topBar.foundation();
             }
         }
 

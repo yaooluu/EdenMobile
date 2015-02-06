@@ -26,36 +26,39 @@
 
 
     var pageView = Backbone.View.extend({
-        
-        events: {
+
+        commonEvents: {
             "click #link-button": "navigate"
         },
 
-    constructor: function(options) {
-        console.log("pageView constructor");
-        
-        // Create and initialize state
-        this._content_template = null; 
-                  this.index = -1;
+        constructor: function (options) {
+            console.log("pageView constructor");
+            
+            // Resolve events between super and sub class
+            this.events = _.extend({},this.commonEvents,this.events);
+
+            // Create and initialize state
+            this._content_template = null;
+            //this.index = -1;
             this.back = true;
-            this.position = 1;
+            //this.position = 1;
             this.name = options["name"];
             if (options["back"] === false) {
                 this.back = false;
             }
-            
+
             var contentTemplate = options["content"];
             if (contentTemplate) {
                 this.content(contentTemplate);
             }
-        
-        // Call the original constructor
-        Backbone.View.apply(this, arguments);
-    },
-    
+
+            // Call the original constructor
+            Backbone.View.apply(this, arguments);
+        },
+
         initialize: function (options) {
             console.log("initialize pageView");
-  
+
 
         },
 

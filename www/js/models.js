@@ -18,123 +18,142 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-;(function ( $, window, document, undefined ) {
-    
-
-var userInfo = Backbone.Model.extend({
-    defaults: {
-        url:"",
-        username:"",
-        password:""
-    },
-    
-    initialize: function(options) {
-        this.bind("change",function() { this.sync("update")});
-        
-    },
-    
-    getKey: function() {
-        return "user-info";
-    },
-    
-    sync: function(method,model,options) {
-        model = this;
-        options || (options = {});
-        app.localSync(method,model,options);
-    }
-});
+;
+(function ($, window, document, undefined) {
 
 
-var formType = Backbone.Model.extend({
-    defaults: {
-        url: "",
-        name: "",
-        loaded: false,
-        form: null,
-        data: null
-    },
-    initialize: function () {
-        //console.log("new formType name:" + this.get("name"));
-    }
-});
+    var userInfo = Backbone.Model.extend({
+        defaults: {
+            url: "",
+            username: "",
+            password: ""
+        },
 
-// create the form list item
-var mFormData = Backbone.Model.extend({
-    defaults: {},
-    initialize: function (options) {
-        this._name = "";
-        this._timestamp = Date.now();
-        this._needsUpdate = false;
-        this._formId = "";
-        this._serverState = 0; // 0 = not on server, 1 = server valid
-        this._type = "";
-    },
-
-    submit: function () {
-        console.log("sending model " + this.get("_name"));
-        this.needsUpdate(true);
-
-        // Check to see if it is a create or update
-        if (this.get("uuid")) {
-            this.sync('update', this, {
-                local: false
+        initialize: function (options) {
+            this.bind("change", function () {
+                this.sync("update")
             });
-        } else {
-            this.sync('create', this, {
-                local: false
-            });
+
+        },
+
+        getKey: function () {
+            return "user-info";
+        },
+
+        sync: function (method, model, options) {
+            model = this;
+            options || (options = {});
+            app.localSync(method, model, options);
         }
-    },
+    });
 
-    getKey: function () {
-        var value = 0;
-        if (this.get("uuid")) {
-            value = this.get("uuid");
-        } else {
-            value = "timestamp:" + this.timestamp();
+
+    var formType = Backbone.Model.extend({
+        defaults: {
+            url: "",
+            name: "",
+            loaded: false,
+            form: null,
+            data: null
+        },
+        initialize: function () {
+            //console.log("new formType name:" + this.get("name"));
         }
-        var prefix = "data-";
-        if (this.type()) {
-            prefix += this.type() + "-";
+    });
+
+    // create the form list item
+    var mFormData = Backbone.Model.extend({
+
+        // The construture has the superclass initialization
+        // the subclasses implement initialize
+        constructor: function (options) {
+            console.log("mFormData constructor");
+
+            // superclass member initialization
+
+            this._name = "";
+            this._timestamp = Date.now();
+            this._needsUpdate = false;
+            this._formId = "";
+            this._serverState = 0; // 0 = not on server, 1 = server valid
+            this._type = "";
+
+
+            // Call the original constructor
+            Backbone.View.apply(this, arguments);
+        },
+
+        initialize: function (options) {
+            console.log("mFormData initialize");
+        },
+
+        submit: function () {
+            console.log("sending model " + this.get("_name"));
+            this.needsUpdate(true);
+
+            // Check to see if it is a create or update
+            if (this.get("uuid")) {
+                this.sync('update', this, {
+                    local: false
+                });
+            } else {
+                this.sync('create', this, {
+                    local: false
+                });
+            }
+        },
+
+        getKey: function () {
+            var value = 0;
+            if (this.get("uuid")) {
+                value = this.get("uuid");
+            } else {
+                value = "timestamp:" + this.timestamp();
+            }
+            var prefix = "data-";
+            if (this.type()) {
+                prefix += this.type() + "-";
+            }
+            return prefix + value;
+        },
+
+        name: function (_name) {
+            if (_name) {
+                this.set("_name", _name);
+            }
+            return this.get("_name");
+        },
+
+        type: function (_type) {
+            return this._type;
+        },
+
+        timestamp: function (_timestamp) {
+            if (_timestamp) {
+                this._timestamp = _timestamp;
+            }
+            return this._timestamp;
+        },
+
+        needsUpdate: function (needsUpdate) {
+            if (needsUpdate != undefined) {
+                this._needsUpdate = needsUpdate;
+            }
+            return this._needsUpdate;
+        },
+
+        sendData: function () {
+            console.log("mFormData::sendData not implemented, should be overridden");
         }
-        return prefix + value;
-    },
-
-    name: function (_name) {
-        if (_name) {
-            this.set("_name", _name);
-        }
-        return this.get("_name");
-    },
-
-    type: function (_type) {
-        return this._type;
-    },
-
-    timestamp: function (_timestamp) {
-        if (_timestamp) {
-            this._timestamp = _timestamp;
-        }
-        return this._timestamp;
-    },
-
-    needsUpdate: function (needsUpdate) {
-        if (needsUpdate != undefined) {
-            this._needsUpdate = needsUpdate;
-        }
-        return this._needsUpdate;
-    },
-
-    sendData: function () {
-        console.log("mFormData::sendData not implemented, should be overridden");
-    }
 
 
-});
-    
-    app.controller.addModel({ "userInfo":userInfo,
-                             "formType":formType,
-                             "mFormData":mFormData});
+    });
+
+    app.controller.addModel({
+        "userInfo": userInfo,
+        "formType": formType,
+        "mFormData": mFormData
+    });
 
 
-})( jQuery, window, document );
+})(jQuery, window, document);

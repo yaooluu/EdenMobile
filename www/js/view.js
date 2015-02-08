@@ -24,8 +24,8 @@
     function view() {
         this.pageSet = {}; // Collection of all active pages
         this.pageStack = []; // Page navigation stack
-        this.loadFormArray = [];
-        this.savedFormArray = [];
+        //this.loadFormArray = [];
+        //this.savedFormArray = [];
     };
 
     view.prototype.init = function (options) {

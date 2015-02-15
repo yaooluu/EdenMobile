@@ -54,9 +54,10 @@
             var menuList = app.config["mainMenu"];
             for (var i = 0; i < menuList.length; i++) {
                 var menuItem = menuList[i];
-                menu.append('<li><a id="link-button" link=' + menuItem["page"] + '">' + menuItem["name"] + '</a>');
+                menu.append('<li><a id="link-button" link="' + menuItem["page"] + '">' + menuItem["name"] + '</a>');
             }
         }
+        //page.setEvents();
     };
 
     view.prototype.addPage = function (name, page) {

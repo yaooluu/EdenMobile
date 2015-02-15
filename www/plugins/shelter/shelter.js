@@ -204,13 +204,6 @@
 
         },
 
-        navigate: function (event) {
-            var target = event.currentTarget;
-            var path = $(target).attr("link");
-            this.trigger("navigate", path);
-            //console.log("navigate " + path);
-        },
-
         onNewItem: function (event) {
             console.log("onNewItem ");
             var controller = app.controller.getControllerByModel("shelter");
@@ -220,7 +213,6 @@
 
         onRefreshList: function (event) {
             console.log("onRefreshList ");
-            //var controller = app.controller.getControllerByModel("item");
             app.controller.updateData("item");
         }
     });

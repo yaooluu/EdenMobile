@@ -1,4 +1,4 @@
-//  Copyright (c) 2014-2015 Thomas Baker
+//  Copyright (c) 2014 Thomas Baker
 //  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -18,36 +18,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-var config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://demo.eden.sahanafoundation.org/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
-        {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
+
+;
+(function ($, window, document, undefined) {
+
+    var mFormData = app.controller.getModel("mFormData");
+    var mShelter = mFormData.extend({
+        initialize: function (options) {
+            mFormData.prototype.initialize.call(this, arguments);
+
+            this._type = "shelter";
         },
-        {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
+
+        sendData: function () {
+            var obj = {
+                $_shelter: []
+            };
+
+            return JSON.stringify(obj);
         }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
-        },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
-        }
-    },
-    version: "0.1.0"
-};
+    });
+
+    
+    app.controller.addModel({"mShelter": mShelter});
+
+})(jQuery, window, document);

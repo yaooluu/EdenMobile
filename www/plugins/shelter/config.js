@@ -1,4 +1,4 @@
-//  Copyright (c) 2014-2015 Thomas Baker
+//  Copyright (c) 2014 Thomas Baker
 //  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -18,36 +18,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-var config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://demo.eden.sahanafoundation.org/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
+
+;
+(function ($, window, document, undefined) {
+    var plugin = [
         {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
+            type: "page",
+            name: "shelter",
+            template: "shelter.htm",
+            script: "shelter.js",
+            style: "shelter.css",
+            classname: "shelterPage",
+            backButton: true
         },
         {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
-        }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
+            type: "model",
+            name: "mShelter",
+            script: "mShelter.js",
+            classname: "mShelter"
         },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
+        {
+            type: "controller",
+            name: "shelterController",
+            script: "shelterController.js",
+            classname: "shelterController"
         }
-    },
-    version: "0.1.0"
-};
+    ];
+    app.pluginManager.addPlugin(plugin);
+})(jQuery, window, document);

@@ -114,7 +114,7 @@
     controller.prototype.newItem = function () {
  
 
-    }
+    };
 
     controller.prototype.editItem = function (model) {
 

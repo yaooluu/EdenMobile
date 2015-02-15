@@ -46,6 +46,17 @@
         var page = new pageObj({"name": name});
         this.addPage(name, page);
         this.pageStack.push(this.pageSet["page-home"]);
+        
+        // add menu to home page
+        var homePage = page.$el;
+        var menu = homePage.find("#header-menu-list");
+        if (menu) {
+            var menuList = app.config["mainMenu"];
+            for (var i = 0; i < menuList.length; i++) {
+                var menuItem = menuList[i];
+                menu.append('<li><a id="link-button" link=' + menuItem["page"] + '">' + menuItem["name"] + '</a>');
+            }
+        }
     };
 
     view.prototype.addPage = function (name, page) {

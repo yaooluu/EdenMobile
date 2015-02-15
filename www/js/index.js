@@ -32,6 +32,11 @@ var app = {
     },
     
     initialize: function() {
+        
+        // Bind config
+        this.config = config;
+        
+        // Do platform spacific initialization
         if (window.cordova === undefined) {
             console.log("running in browser");
             $("#content-messages").html("browser<br>");

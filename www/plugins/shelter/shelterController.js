@@ -26,13 +26,14 @@
     function controller() {
         //console.log("settings controller");
         this._pages = {};
+        this._formURL = "/cr/shelter/create.s3json?options=true&references=true";
     };
 
     controller.prototype.init = function (options) {
         console.log("shelterController init");
 
         // Register models for this controller
-        app.controller.setControllerByModel("shelter", this);
+        //app.controller.setControllerByModel("shelter", this);
         app.controller.setControllerByModel("shelter-form", this);
 
         // Load the saved data or initialize data
@@ -48,6 +49,21 @@
     controller.prototype.updatePath = function (name) {
         //console.log("settings controller onLoad");
         var path = app.controller.getHostURL();
+        switch (name) {
+        case "shelter-form":
+            {
+                //this.loadCaseForm();
+                //return;
+                path += this._formURL;
+            }
+            break;
+       default:
+            {
+                alert("nope");
+                path = "";
+            }
+        }
+
 
         return path;
     };
@@ -108,7 +124,7 @@
     };
 
     controller.prototype.updateAll = function () {
-
+        app.controller.updateData(["shelter-form"]);
     };
 
     controller.prototype.newItem = function () {

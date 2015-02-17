@@ -49,6 +49,7 @@
     controller.prototype.updatePath = function (name) {
         //console.log("settings controller onLoad");
         var path = app.controller.getHostURL();
+        /*
         switch (name) {
         case "shelter-form":
             {
@@ -63,7 +64,7 @@
                 path = "";
             }
         }
-
+*/
 
         return path;
     };

@@ -86,8 +86,6 @@
         //console.log("view changePage to " + pageName);
         if (pageName === "page-back") {
             this.popPage();
-        } else if (pageName === "page-people") {
-            this.notifyModal("Not Implemented", "This page is not implemented yet");
         } else {
             this.showPage(pageName);
         }

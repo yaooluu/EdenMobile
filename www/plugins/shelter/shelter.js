@@ -107,7 +107,8 @@
 
     });
 
-    var sheltersPage = Backbone.View.extend({ //pageView.extend({
+    var pageView = app.view.getPage("pageView");
+    var sheltersPage = pageView.extend({ //pageView.extend({
         tagName: "div",
         className: "se-page",
         name: "",

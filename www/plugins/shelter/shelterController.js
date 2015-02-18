@@ -21,6 +21,16 @@
 
 ;
 (function ($, window, document, undefined) {
+    
+    var forms = {"shelter-form":{form_path:"/cr/shelter/create.s3json?options=true&references=true"},
+                 "gis-location-form":{form_path:"/gis/location/create.s3json?options=true&references=true"}};
+    
+    var shelterTable = [{name:"name",     data_path:"$_cr_shelter/field", form:"shelter-form"},
+                 {name:"status",          data_path:"$_cr_shelter/field", form:"shelter-form"},
+                 {name:"shelter_type_id", data_path:"$_cr_shelter/field", form:"shelter-form"},
+                 {name:"population",      data_path:"$_cr_shelter/field", form:"shelter-form"},
+                 {name:"L0",              data_path:"$_gis_location/field", form:"gis-location-form", common_name: "Country"},
+                 {name:"addr_street",     data_path:"$_gis_location/field", form:"gis-location-form"}];
 
     // The master application controller
     function controller() {
@@ -34,7 +44,9 @@
 
         // Register models for this controller
         //app.controller.setControllerByModel("shelter", this);
-        app.controller.setControllerByModel("shelter-form", this);
+        for (var formName in forms) {
+            app.controller.setControllerByModel(formName, this);
+        }
 
         // Load the saved data or initialize data
         var rawData = app.storage.read("shelter-form");
@@ -49,28 +61,23 @@
     controller.prototype.updatePath = function (name) {
         //console.log("settings controller onLoad");
         var path = app.controller.getHostURL();
-        /*
-        switch (name) {
-        case "shelter-form":
-            {
-                //this.loadCaseForm();
-                //return;
-                path += this._formURL;
-            }
-            break;
-       default:
-            {
+        
+        var formSpec = forms[name];
+        if (formSpec) {
+            path += formSpec["form_path"];
+        }
+        else {
                 alert("nope");
                 path = "";
             }
-        }
-*/
+
 
         return path;
     };
 
     controller.prototype.updateResponse = function (name, data, rawData) {
         //console.log("settings controller updateResponse");
+        var formSpec = forms[name];
 
     };
 
@@ -125,7 +132,8 @@
     };
 
     controller.prototype.updateAll = function () {
-        app.controller.updateData(["shelter-form"]);
+        
+        app.controller.updateData(Object.keys(forms));
     };
 
     controller.prototype.newItem = function () {

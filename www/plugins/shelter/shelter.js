@@ -21,6 +21,7 @@
 
 ;
 (function ($, window, document, undefined) {
+    
 
     var shelterItemElement = Backbone.View.extend({ //pageView.extend({
         tagName: "tr",

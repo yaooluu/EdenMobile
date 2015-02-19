@@ -78,6 +78,16 @@
     controller.prototype.updateResponse = function (name, data, rawData) {
         //console.log("settings controller updateResponse");
         var formSpec = forms[name];
+        
+        // Save form
+        if (name.indexOf("-form") >= 0) {
+            //this.setFormData(name,data);
+            this.parseForm(name,data);
+            localStorage.setItem(name,rawData);
+        }
+        else {
+            this.updateList(name, data);
+        }
 
     };
 
@@ -93,7 +103,8 @@
 
     //-------------------------------------------------------------------------
 
-    controller.prototype.updateList = function () {
+    controller.prototype.updateList = function (name, data) {
+        console.log("shelterController: updateList " + name);
 
     };
 
@@ -117,8 +128,9 @@
         return references;
     };
 
-    controller.prototype.parseForm = function () {
- 
+    controller.prototype.parseForm = function (name, data) {
+       console.log("shelterController: parseForm " + name);
+        var model = null;
         return model;
     };
 

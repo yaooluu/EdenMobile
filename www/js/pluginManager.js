@@ -17,6 +17,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+"use strict";
 
 // Plugin config parameters
 //
@@ -123,7 +124,7 @@
     pluginManager.prototype.loadPlugins = function () {
         //console.log("pluginManager loadPlugins");
         var pluginConfig = config.plugins;
-        for (key in pluginConfig) {
+        for (var key in pluginConfig) {
             var pluginSpec = pluginConfig[key];
             var name = pluginSpec["name"];
             var pluginData = _.extend(pluginSpec, {

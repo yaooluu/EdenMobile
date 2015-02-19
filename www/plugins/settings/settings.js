@@ -97,7 +97,7 @@
 
             // Initialize values
             this.undelegateEvents();
-            this.$("#version").html("Version: " + config.version);
+            this.$("#version").html("Version: " + app.config.version);
             this.serverURL(app.state.settings.serverInfo.get("url"));
             this.username(app.state.settings.serverInfo.get("username"));
             this.password(app.state.settings.serverInfo.get("password"));

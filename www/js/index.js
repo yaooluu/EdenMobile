@@ -35,7 +35,7 @@ var app = {
     initialize: function() {
         
         // Bind config
-        this.config = config;
+        //this.config = config;
         
         // Do platform spacific initialization
         if (window.cordova === undefined) {
@@ -77,7 +77,7 @@ var app = {
         var serverInfo = this.state.settings.serverInfo;
         serverInfo.fetch();
         if (!serverInfo.get("url")) {
-            serverInfo.set("url",config.defaults.url);
+            serverInfo.set("url",app.config.defaults.url);
         }
     },
     

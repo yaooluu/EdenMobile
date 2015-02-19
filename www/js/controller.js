@@ -136,7 +136,7 @@
     }
 
     controller.prototype.pingServer = function () {
-        var path = this.getHostURL() + config.defaults.pingPath;
+        var path = this.getHostURL() + app.config.defaults.pingPath;
         app.communicator.ping(path, this.cbPingServer.bind(this));
     }
     
@@ -343,7 +343,7 @@
 
     controller.prototype.login = function (params) {
         console.log("controller login");
-        var url = params["url"] + config.defaults.loginPath;
+        var url = params["url"] + app.config.defaults.loginPath;
         //app.view.notifyMessage("Loading...","Loading forms.");
         app.communicator.requestLogin(url, params, this.cbLogin.bind(this));
 

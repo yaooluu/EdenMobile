@@ -19,7 +19,10 @@
 //  THE SOFTWARE.
 "use strict";
 
-var config = {
+
+;
+(function ($, window, document, undefined) {
+    app.config = {
     developerMode: true,
     debug: true,
     debugNoCommTimeout: false,
@@ -52,3 +55,6 @@ var config = {
     },
     version: "0.1.0"
 };
+    
+    
+})(jQuery, window, document);

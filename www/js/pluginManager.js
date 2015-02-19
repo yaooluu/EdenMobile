@@ -123,7 +123,7 @@
 
     pluginManager.prototype.loadPlugins = function () {
         //console.log("pluginManager loadPlugins");
-        var pluginConfig = config.plugins;
+        var pluginConfig = app.config.plugins;
         for (var key in pluginConfig) {
             var pluginSpec = pluginConfig[key];
             var name = pluginSpec["name"];

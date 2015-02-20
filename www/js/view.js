@@ -161,7 +161,7 @@
         //var form = page.model;
         //var formData = form.get("form");
         //var model = form.get("current");
-        var form = app.controller.getFormByName("disease_case");
+        var form = app.controller.getForm("disease_case");
         var formName = form.get("name");
         var formData = form.get("form");
         var data = form.get("obj")["$_" + formName][0]["field"];

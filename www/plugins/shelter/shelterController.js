@@ -21,16 +21,56 @@
 
 ;
 (function ($, window, document, undefined) {
-    
-    var forms = {"shelter-form":{form_path:"/cr/shelter/create.s3json?options=true&references=true"},
-                 "gis-location-form":{form_path:"/gis/location/create.s3json?options=true&references=true"}};
-    
-    var shelterTable = [{name:"name",     data_path:"$_cr_shelter/field", form:"shelter-form"},
-                 {name:"status",          data_path:"$_cr_shelter/field", form:"shelter-form"},
-                 {name:"shelter_type_id", data_path:"$_cr_shelter/field", form:"shelter-form"},
-                 {name:"population",      data_path:"$_cr_shelter/field", form:"shelter-form"},
-                 {name:"L0",              data_path:"$_gis_location/field", form:"gis-location-form", common_name: "Country"},
-                 {name:"addr_street",     data_path:"$_gis_location/field", form:"gis-location-form"}];
+
+    var forms = {
+        "shelter-form": {
+            form_path: "/cr/shelter/create.s3json?options=true&references=true"
+        },
+        "gis-location-form": {
+            form_path: "/gis/location/create.s3json?options=true&references=true"
+        }
+    };
+
+    var shelterTable = [
+        {
+            name: "name",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            table_priority: "all"
+        },
+        {
+            name: "status",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "shelter_type_id",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "population",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "L0",
+            data_path: "$_gis_location/field",
+            form: "gis-location-form",
+            common_name: "Country"
+        },
+        {
+            name: "addr_street",
+            data_path: "$_gis_location/field",
+            form: "gis-location-form"
+        }];
+
+    var tableRequirements = [
+        {
+            name: "shelterTable",
+            tableSpec: shelterTable,
+            req: ["shelter-form", "gis-location-form"]
+        }];
 
     // The master application controller
     function controller() {
@@ -51,7 +91,8 @@
         // Load the saved data or initialize data
         var rawData = app.storage.read("shelter-form");
         if (rawData) {
-            this.parseForm();
+            var data = JSON.parse(rawData);
+            this.parseForm("shelter-form", data);
         }
 
         // update all data from server if connected
@@ -61,15 +102,14 @@
     controller.prototype.updatePath = function (name) {
         //console.log("settings controller onLoad");
         var path = app.controller.getHostURL();
-        
+
         var formSpec = forms[name];
         if (formSpec) {
             path += formSpec["form_path"];
+        } else {
+            alert("nope");
+            path = "";
         }
-        else {
-                alert("nope");
-                path = "";
-            }
 
 
         return path;
@@ -78,14 +118,13 @@
     controller.prototype.updateResponse = function (name, data, rawData) {
         //console.log("settings controller updateResponse");
         var formSpec = forms[name];
-        
+
         // Save form
         if (name.indexOf("-form") >= 0) {
             //this.setFormData(name,data);
-            this.parseForm(name,data);
-            localStorage.setItem(name,rawData);
-        }
-        else {
+            this.parseForm(name, data);
+            localStorage.setItem(name, rawData);
+        } else {
             this.updateList(name, data);
         }
 
@@ -128,10 +167,45 @@
         return references;
     };
 
-    controller.prototype.parseForm = function (name, data) {
-       console.log("shelterController: parseForm " + name);
-        var model = null;
-        return model;
+    controller.prototype.parseForm = function (name, obj) {
+        console.log("shelterController: parseForm " + name);
+        //return;
+        // Create a new model if one doesn't already exist
+        var model = app.controller.getForm(name);
+        if (!model) {
+            var form = app.controller.getModel("formType");
+            model = new form({
+                "name": name,
+                "obj": obj
+            });
+            app.controller.addForm(model);
+        }
+
+        // Parse the data
+        var data = model.get("data") || {};
+        for (var i = 0; i < shelterTable.length; i++) {
+            var columnItem = shelterTable[i];
+            var columnName = columnItem["name"];
+            var columnPath = columnItem["data_path"];
+            var pathList = columnPath.split("/");
+
+            if (!obj[pathList[0]]) {
+                continue;
+            }
+            var field = obj[pathList[0]][0];
+            for (var j = 1; j < pathList.length; j++) {
+                field = field[pathList[j]][0];
+                if (!field) {
+                    break;
+                }
+            }
+
+            // Save the data
+            var record = field[columnName];
+            data[columnName] = "";
+        }
+        //var model = null;
+        //return model;
     };
 
 
@@ -144,12 +218,12 @@
     };
 
     controller.prototype.updateAll = function () {
-        
+
         app.controller.updateData(Object.keys(forms));
     };
 
     controller.prototype.newItem = function () {
- 
+
 
     };
 

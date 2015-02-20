@@ -363,7 +363,7 @@
         this._formList.add(model);
     };
 
-    controller.prototype.getFormByName = function (name) {
+    controller.prototype.getForm = function (name) {
         for (var i = 0; i < this._formList.length; i++) {
             if (name === this._formList.at(i).get("name")) {
                 return this._formList.at(i);

@@ -17,17 +17,18 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-"use strict";
 
-;
 (function ($, window, document, undefined) {
+    "use strict";
 
     var forms = {
         "shelter-form": {
-            form_path: "/cr/shelter/create.s3json?options=true&references=true"
+            form_path: "/cr/shelter/create.s3json?options=true&references=true",
+            form_record: "$_cr_shelter"
         },
         "gis-location-form": {
-            form_path: "/gis/location/create.s3json?options=true&references=true"
+            form_path: "/gis/location/create.s3json?options=true&references=true",
+            form_record: "$_gis_location"
         }
     };
 
@@ -89,10 +90,12 @@
         }
 
         // Load the saved data or initialize data
-        var rawData = app.storage.read("shelter-form");
+        for (var key in forms) {
+        var rawData = app.storage.read(key);
         if (rawData) {
             var data = JSON.parse(rawData);
-            this.parseForm("shelter-form", data);
+            this.parseForm(key, data);
+        }
         }
 
         // update all data from server if connected
@@ -171,17 +174,21 @@
         console.log("shelterController: parseForm " + name);
         //return;
         // Create a new model if one doesn't already exist
+        var formRecordName = forms[name]["form_record"];
+        var formRecord  = obj[formRecordName][0]["field"];
         var model = app.controller.getForm(name);
         if (!model) {
             var form = app.controller.getModel("formType");
             model = new form({
                 "name": name,
+                "form":formRecord,
                 "obj": obj
             });
             app.controller.addForm(model);
         }
 
         // Parse the data
+        /*
         var data = model.get("data") || {};
         for (var i = 0; i < shelterTable.length; i++) {
             var columnItem = shelterTable[i];
@@ -204,6 +211,7 @@
             var record = field[columnName];
             data[columnName] = "";
         }
+        */
         //var model = null;
         //return model;
     };

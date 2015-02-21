@@ -23,6 +23,41 @@
 ;
 (function ($, window, document, undefined) {
     
+    
+    var shelterTable = [
+        {
+            name: "name",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            table_priority: "all"
+        },
+        {
+            name: "status",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "shelter_type_id",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "population",
+            data_path: "$_cr_shelter/field",
+            form: "shelter-form"
+        },
+        {
+            name: "L0",
+            data_path: "$_gis_location/field",
+            form: "gis-location-form",
+            common_name: "Country"
+        },
+        {
+            name: "addr_street",
+            data_path: "$_gis_location/field",
+            form: "gis-location-form"
+        }];
+
 
     var shelterItemElement = Backbone.View.extend({ //pageView.extend({
         tagName: "tr",
@@ -217,6 +252,14 @@
         onRefreshList: function (event) {
             console.log("onRefreshList ");
             app.controller.updateData("item");
+        },
+        
+        updateForm: function(obj) {
+            console.log("page-shelter updateForm");
+        },
+        
+        updateData: function(obj) {
+            console.log("page-shelter updateData");
         }
     });
 

@@ -31,46 +31,21 @@
             form_record: "$_gis_location"
         }
     };
-
-    var shelterTable = [
-        {
-            name: "name",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            table_priority: "all"
-        },
-        {
-            name: "status",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
-        },
-        {
-            name: "shelter_type_id",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
-        },
-        {
-            name: "population",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
-        },
-        {
-            name: "L0",
-            data_path: "$_gis_location/field",
-            form: "gis-location-form",
-            common_name: "Country"
-        },
-        {
-            name: "addr_street",
-            data_path: "$_gis_location/field",
-            form: "gis-location-form"
-        }];
+    
+    
+    var formList = {
+        "shelter": {
+            form_path: "/cr/shelter.s3json",
+            form_record: "$_cr_shelter"
+        }
+    };
 
     var tableRequirements = [
         {
             name: "shelterTable",
-            tableSpec: shelterTable,
-            req: ["shelter-form", "gis-location-form"]
+            //tableSpec: shelterTable,
+            req: ["shelter-form", "gis-location-form"],
+            page: "page-shelter"
         }];
 
     // The master application controller
@@ -88,14 +63,17 @@
         for (var formName in forms) {
             app.controller.setControllerByModel(formName, this);
         }
+        for (var dataName in formList) {
+            app.controller.setControllerByModel(dataName, this);
+        }
 
         // Load the saved data or initialize data
         for (var key in forms) {
-        var rawData = app.storage.read(key);
-        if (rawData) {
-            var data = JSON.parse(rawData);
-            this.parseForm(key, data);
-        }
+            var rawData = app.storage.read(key);
+            if (rawData) {
+                var data = JSON.parse(rawData);
+                this.parseForm(key, data);
+            }
         }
 
         // update all data from server if connected
@@ -106,7 +84,7 @@
         //console.log("settings controller onLoad");
         var path = app.controller.getHostURL();
 
-        var formSpec = forms[name];
+        var formSpec = forms[name] || formList[name];
         if (formSpec) {
             path += formSpec["form_path"];
         } else {
@@ -175,45 +153,27 @@
         //return;
         // Create a new model if one doesn't already exist
         var formRecordName = forms[name]["form_record"];
-        var formRecord  = obj[formRecordName][0]["field"];
+        var formRecord = obj[formRecordName][0]["field"];
         var model = app.controller.getForm(name);
         if (!model) {
             var form = app.controller.getModel("formType");
             model = new form({
                 "name": name,
-                "form":formRecord,
+                "form": formRecord,
                 "obj": obj
             });
             app.controller.addForm(model);
         }
 
-        // Parse the data
-        /*
-        var data = model.get("data") || {};
-        for (var i = 0; i < shelterTable.length; i++) {
-            var columnItem = shelterTable[i];
-            var columnName = columnItem["name"];
-            var columnPath = columnItem["data_path"];
-            var pathList = columnPath.split("/");
-
-            if (!obj[pathList[0]]) {
-                continue;
+        // Update pages
+        for (var i = 0; i < tableRequirements.length; i++) {
+            var req = tableRequirements[i];
+            var pageName = req["page"];
+            var page = app.view.getPage(pageName);
+            if (page) {
+                page.updateForm(obj);
             }
-            var field = obj[pathList[0]][0];
-            for (var j = 1; j < pathList.length; j++) {
-                field = field[pathList[j]][0];
-                if (!field) {
-                    break;
-                }
-            }
-
-            // Save the data
-            var record = field[columnName];
-            data[columnName] = "";
         }
-        */
-        //var model = null;
-        //return model;
     };
 
 
@@ -228,6 +188,7 @@
     controller.prototype.updateAll = function () {
 
         app.controller.updateData(Object.keys(forms));
+        app.controller.updateData(Object.keys(formList));
     };
 
     controller.prototype.newItem = function () {

@@ -106,6 +106,18 @@
                 element.html(element.html() + message);
                 element.addClass("active");
             }
+        },
+        
+        updateForm: function(obj) {
+            // This function should be implemented by a child view
+            // It is called when a form record is loaded
+            console.log("pageView.updateForm not implemented");
+        },
+        
+        updateData: function(obj) {
+            // This function should be implemented by a child view
+            // It is called when a data from the server is recieved
+            console.log("pageView.updateData not implemented");
         }
     });
 

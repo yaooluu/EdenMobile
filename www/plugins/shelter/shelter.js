@@ -323,7 +323,9 @@
                                 label = columnItem["common_name"];
                             }
                             var columnIndex = i+1;
-                            var tableString = '<th class="se-column-all" index="' + columnIndex + '">' + label + '</th>';
+                            var tableString = '<th index="' + columnIndex + 
+                                                '" class="se-column-' + columnItem["table_priority"] + 
+                                                '">' + label + '</th>';
                             var columnElement = tableHeader.find("th[index='" + columnIndex + "']");
                             // TODO: if the server version of the form has changed then we should update this row
                             if (!columnElement.length) {

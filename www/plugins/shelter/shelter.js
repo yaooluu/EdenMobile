@@ -22,40 +22,45 @@
 
 ;
 (function ($, window, document, undefined) {
-    
-    
+
+
     var shelterTable = [
         {
             name: "name",
-            data_path: "$_cr_shelter/field",
+            form_path: "$_cr_shelter/field",
             form: "shelter-form",
             table_priority: "all"
         },
         {
             name: "status",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            table_priority: "all"
         },
         {
             name: "shelter_type_id",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            table_priority: "medium"
         },
         {
             name: "population",
-            data_path: "$_cr_shelter/field",
-            form: "shelter-form"
-        },
-        {
-            name: "L0",
-            data_path: "$_gis_location/field",
-            form: "gis-location-form",
-            common_name: "Country"
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            table_priority: "medium"
         },
         {
             name: "addr_street",
-            data_path: "$_gis_location/field",
-            form: "gis-location-form"
+            form_path: "$_gis_location/field",
+            form: "gis-location-form",
+            table_priority: "medium"
+        },
+        {
+            name: "L0",
+            form_path: "$_gis_location/field",
+            form: "gis-location-form",
+            common_name: "Country",
+            table_priority: "large"
         }];
 
 
@@ -91,7 +96,7 @@
 
         },
         render: function () {
- 
+
             // records loaded from the server have more data than locally stored
             if (this.model.get("uuid")) {
                 var itemData = this.model.get("rawData");
@@ -174,7 +179,7 @@
         },
         initialize: function (options) {
             console.log("initialize shelters page");
-             var content = options["content"];
+            var content = options["content"];
             if (content) {
                 this.setContent(content);
             }
@@ -253,12 +258,87 @@
             console.log("onRefreshList ");
             app.controller.updateData("item");
         },
-        
-        updateForm: function(obj) {
+
+        updateForm: function (obj) {
             console.log("page-shelter updateForm");
+            var tableHeader = this.$el.find("thead tr");
+
+            for (var i = 0; i < shelterTable.length; i++) {
+                var record = obj;
+                var label = "";
+                var value = "";
+                var columnItem = shelterTable[i];
+                var columnName = columnItem["name"];
+                var path = columnItem["form_path"];
+                var pathList = path.split("/");
+                for (var j = 0; j < pathList.length; j++) {
+                    var pathItem = pathList[j];
+
+                    if (!record[pathItem]) {
+                        record = null;
+                        break;
+                    }
+                    if (pathItem.indexOf("$_") >= 0) {
+                        record = record[pathItem][0];
+                    } else {
+                        record = record[pathItem];
+                    }
+                }
+                if (!record) {
+                    continue;
+                }
+
+                // find item in array
+                if (Array.isArray(record)) {
+                    for (var j = 0; j < record.length; j++) {
+                        var recordItem = record[j];
+                        if (recordItem["@name"] === columnName) {
+                            label = recordItem["@label"];
+                            var type = recordItem["@type"];
+                            switch (type) {
+                            case "string":
+                                {
+                                    value = "";
+                                }
+                                break;
+                            case "integer":
+                                {
+                                    value = "0";
+                                }
+                                break;
+                            default:
+                                {
+                                    if (type.indexOf("list:reference") >= 0) {
+                                        console.log("\ttype - " + type);
+                                    } else if (recordItem["@type"].indexOf("reference") >= 0) {
+                                        console.log("\ttype - " + type);
+                                    } else {
+                                        console.log("\ttype unknown - " + type);
+                                    }
+                                }
+                            }
+                            
+                            // Do the table row
+                            if (columnItem["common_name"]) {
+                                label = columnItem["common_name"];
+                            }
+                            var columnIndex = i+1;
+                            var tableString = '<th class="se-column-all" index="' + columnIndex + '">' + label + '</th>';
+                            var columnElement = tableHeader.find("th[index='" + columnIndex + "']");
+                            // TODO: if the server version of the form has changed then we should update this row
+                            if (!columnElement.length) {
+                                tableHeader.append(tableString);
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    console.log("not array");
+                }
+            }
         },
-        
-        updateData: function(obj) {
+
+        updateData: function (obj) {
             console.log("page-shelter updateData");
         }
     });

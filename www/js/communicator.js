@@ -23,7 +23,7 @@
 (function ($, window, document, undefined) {
 
     // create the query state
-    var REQ_WAIT_TIME = 4000;
+    var REQ_WAIT_TIME = 10000;
 
     // The actual plugin constructor
     function communicator() {

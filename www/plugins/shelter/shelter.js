@@ -29,38 +29,44 @@
             name: "name",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
-            table_priority: "all"
+            table_priority: "all",
+            label: ""
         },
         {
             name: "status",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
-            table_priority: "all"
+            table_priority: "all",
+            label: ""
         },
         {
             name: "shelter_type_id",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
-            table_priority: "medium"
+            table_priority: "medium",
+            label: ""
         },
         {
             name: "population",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
-            table_priority: "medium"
+            table_priority: "medium",
+            label: ""
         },
         {
             name: "addr_street",
             form_path: "$_gis_location/field",
             form: "gis-location-form",
-            table_priority: "medium"
+            table_priority: "medium",
+            label: ""
         },
         {
             name: "L0",
             form_path: "$_gis_location/field",
             form: "gis-location-form",
             common_name: "Country",
-            table_priority: "large"
+            table_priority: "large",
+            label: ""
         }];
 
 
@@ -171,6 +177,13 @@
             "<div id='content'></div>"
 
         ),
+        tableHeaderColumn: _.template(
+            '<th ' +
+            'index="<%= column_index %>" ' +
+            'class="se-column-<%= table_priority %>">' +
+            '<%= label %>' + 
+            '</th>'
+        ),
         content_template: null,
         events: {
             "click #link-button": "navigate",
@@ -200,6 +213,18 @@
             });
             if (this.content_template) {
                 this.$el.find("#content").append(this.content_template({}));
+            }
+            
+            // Fill in table header labels
+            var headerRow = this.$el.find("thead tr");
+            for (var i = 0; i < shelterTable.length; i++) {
+                var columnItem = shelterTable[i];
+                var priority = columnItem["table_priority"];
+                var index = i + 1;
+                var label = columnItem["label"];
+                headerRow.append(this.tableHeaderColumn({column_index:index,
+                                                         table_priority: priority,
+                                                        label: label}));
             }
             return this;
         },
@@ -317,19 +342,25 @@
                                     }
                                 }
                             }
-                            
+
                             // Do the table row
                             if (columnItem["common_name"]) {
                                 label = columnItem["common_name"];
                             }
-                            var columnIndex = i+1;
-                            var tableString = '<th index="' + columnIndex + 
-                                                '" class="se-column-' + columnItem["table_priority"] + 
-                                                '">' + label + '</th>';
+                            var columnIndex = i + 1;
+                            //var tableString = '<th index="' + columnIndex +
+                            //    '" class="se-column-' + columnItem["table_priority"] +
                             var columnElement = tableHeader.find("th[index='" + columnIndex + "']");
                             // TODO: if the server version of the form has changed then we should update this row
                             if (!columnElement.length) {
+                           var tableString = this.tableHeaderColumn({column_index:columnIndex,
+                                                         table_priority: columnItem["table_priority"],
+                                                        label: label})
                                 tableHeader.append(tableString);
+                            }
+                            else {
+                                    columnItem["label"] = label;
+                                columnElement.html(label);
                             }
                             break;
                         }

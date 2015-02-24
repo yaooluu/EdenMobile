@@ -59,7 +59,6 @@
         console.log("shelterController init");
 
         // Register models for this controller
-        //app.controller.setControllerByModel("shelter", this);
         for (var formName in forms) {
             app.controller.setControllerByModel(formName, this);
         }

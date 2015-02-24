@@ -23,7 +23,8 @@
 (function ($, window, document, undefined) {
 
     // create the query state
-    var REQ_WAIT_TIME = 10000;
+    var REQ_WAIT_TIME       = 4000;
+    var REQ_WAIT_INCREMENT  = 2000;
 
     // The actual plugin constructor
     function communicator() {
@@ -43,6 +44,8 @@
         var status = true;
         var xhr = new XMLHttpRequest();
         var id = this.newId();
+        var startTime = Date.now();
+        var timeoutIncrement = 2000;
 
         //--------------------------------------------------------
         // Callbacks
@@ -74,7 +77,19 @@
         }
 
         function onReadyStateChange(reply) {
-            console.log("newRequestData: onReadyStateChange: " + xhr.readyState + " " + xhr.status);
+            var elapsed = Date.now() - startTime;
+            var newTimeout = elapsed + REQ_WAIT_INCREMENT;
+            console.log("newRequestData: onReadyStateChange: " + 
+                        xhr.readyState + " " + 
+                        xhr.status + " " + elapsed + " " + newTimeout);
+        }
+
+        function onProgress(evt) {
+            console.log("newRequestData: onProgress: " + evt.loaded);
+            if (evt.lengthComputable) {
+                var value = (evt.loaded / evt.total) * 100;
+                console.log("\t" + value + "%");
+            }
         }
 
         //--------------------------------------------------------
@@ -90,9 +105,10 @@
         xhr.ontimeout = onTimeout;
         xhr.timeout = REQ_WAIT_TIME;
         xhr.onerror = onError;
-        //xhr.onreadystatechange = onReadyStateChange;
+        xhr.onreadystatechange = onReadyStateChange;
         xhr.open(type, url, true);
         xhr.setRequestHeader('Authorization', authentication);
+        xhr.onprogress = onProgress;
 
         if (data === undefined) {
             data = null;

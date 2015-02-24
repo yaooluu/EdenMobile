@@ -181,7 +181,7 @@
             '<th ' +
             'index="<%= column_index %>" ' +
             'class="se-column-<%= table_priority %>">' +
-            '<%= label %>' + 
+            '<%= label %>' +
             '</th>'
         ),
         content_template: null,
@@ -214,7 +214,7 @@
             if (this.content_template) {
                 this.$el.find("#content").append(this.content_template({}));
             }
-            
+
             // Fill in table header labels
             var headerRow = this.$el.find("thead tr");
             for (var i = 0; i < shelterTable.length; i++) {
@@ -222,9 +222,11 @@
                 var priority = columnItem["table_priority"];
                 var index = i + 1;
                 var label = columnItem["label"];
-                headerRow.append(this.tableHeaderColumn({column_index:index,
-                                                         table_priority: priority,
-                                                        label: label}));
+                headerRow.append(this.tableHeaderColumn({
+                    column_index: index,
+                    table_priority: priority,
+                    label: label
+                }));
             }
             return this;
         },
@@ -348,18 +350,16 @@
                                 label = columnItem["common_name"];
                             }
                             var columnIndex = i + 1;
-                            //var tableString = '<th index="' + columnIndex +
-                            //    '" class="se-column-' + columnItem["table_priority"] +
                             var columnElement = tableHeader.find("th[index='" + columnIndex + "']");
-                            // TODO: if the server version of the form has changed then we should update this row
                             if (!columnElement.length) {
-                           var tableString = this.tableHeaderColumn({column_index:columnIndex,
-                                                         table_priority: columnItem["table_priority"],
-                                                        label: label})
+                                var tableString = this.tableHeaderColumn({
+                                    column_index: columnIndex,
+                                    table_priority: columnItem["table_priority"],
+                                    label: label
+                                })
                                 tableHeader.append(tableString);
-                            }
-                            else {
-                                    columnItem["label"] = label;
+                            } else {
+                                columnItem["label"] = label;
                                 columnElement.html(label);
                             }
                             break;

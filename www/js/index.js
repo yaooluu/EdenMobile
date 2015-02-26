@@ -97,7 +97,7 @@ var app = {
 
     onLoad: function() {
         this.controller.pingServer();
-        //this.controller.updateAll();
+        this.controller.updateAll();
     },
     
     onDebug: function() {

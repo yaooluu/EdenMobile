@@ -23,17 +23,34 @@
 (function ($, window, document, undefined) {
 
     // create the query state
-    var REQ_WAIT_TIME       = 4000;
+    var REQ_WAIT_TIME       = 8000;
     var REQ_WAIT_INCREMENT  = 2000;
 
     // The actual plugin constructor
     function communicator() {
         this._commId = 0;
+        this._activeRequests = 0;
     };
 
     communicator.prototype.newId = function () {
         //this._commId++;
         return ++this._commId;
+    };
+    
+    communicator.prototype.setActive = function (isActive) {
+        if (isActive) {
+            this._activeRequests++;
+        }
+        else if (this._activeRequests > 0) {
+            this._activeRequests--;
+        }
+
+        return this._activeRequests;
+    };
+
+    communicator.prototype.numActive = function () {
+        //this._commId++;
+        return this._activeRequests;
     };
 
     communicator.prototype.newRequestData = function (type, url, callback, data) {
@@ -45,20 +62,32 @@
         var xhr = new XMLHttpRequest();
         var id = this.newId();
         var startTime = Date.now();
-        var timeoutIncrement = 2000;
+        //var timeoutIncrement = 2000;
+        var timer = null;
+        var lastTime = 0;
 
         //--------------------------------------------------------
         // Callbacks
 
         function onTimeout() {
-            console.log("newRequestData: onTimeout");
-            callback(id, false, "Server not responding");
+            console.log("newRequestData: onTimeout " + id);
+            this.setActive(0);
+            if (this.numActive()) {
+                xhr.abort();
+                callback(id, false, "Server not responding");
+            }
+            else {
+                timer = setTimeout(onTimeout,REQ_WAIT_INCREMENT);
+                console.log("\tOther connections still active, resetting timer " + id);
+            }
         };
 
         function onLoad(reply) {
-            console.log("newRequestData: onLoad: " + id + " " + xhr.readyState + " " + xhr.status);
+            var elapsed = Date.now() - startTime;
+            console.log("newRequestData: onLoad: " + id + " " + xhr.readyState + " " + xhr.status + " " + elapsed);
             var returnStatus = true;
             var message = reply.target.responseText;
+            clearTimeout(timer);
             if (xhr.status != 200) {
                 //callback(false, "Server error");
                 //return;
@@ -74,18 +103,31 @@
 
         function onError(reply) {
             console.log("newRequestData: onError");
+            clearTimeout(timer);
+            this.setActive(0);
         }
 
         function onReadyStateChange(reply) {
+            if (xhr.readyState === 3) {
             var elapsed = Date.now() - startTime;
-            var newTimeout = elapsed + REQ_WAIT_INCREMENT;
+            //var newTimeout = elapsed + REQ_WAIT_INCREMENT;
+            ///xhr.timeout = newTimeout;
+                if (elapsed != lastTime) {
+                    lastTime = elapsed;
+                    clearTimeout(timer);
+                    timer = setTimeout(onTimeout,REQ_WAIT_INCREMENT);
+                }
+            
             console.log("newRequestData: onReadyStateChange: " + 
+                        id + " " +
                         xhr.readyState + " " + 
-                        xhr.status + " " + elapsed + " " + newTimeout);
+                        xhr.status + " " + elapsed);
+            }
         }
 
         function onProgress(evt) {
-            console.log("newRequestData: onProgress: " + evt.loaded);
+            console.log("newRequestData: onProgress: " + 
+                        id + " " + evt.loaded);
             if (evt.lengthComputable) {
                 var value = (evt.loaded / evt.total) * 100;
                 console.log("\t" + value + "%");
@@ -102,8 +144,8 @@
 
         console.log("sending " + id);
         xhr.onload = onLoad;
-        xhr.ontimeout = onTimeout;
-        xhr.timeout = REQ_WAIT_TIME;
+        //xhr.ontimeout = onTimeout;
+        //xhr.timeout = REQ_WAIT_TIME;
         xhr.onerror = onError;
         xhr.onreadystatechange = onReadyStateChange;
         xhr.open(type, url, true);
@@ -115,8 +157,11 @@
         }
 
         try {
+            timer = setTimeout(onTimeout, REQ_WAIT_TIME);
             xhr.send(data);
+            this.setActive(1);
         } catch (err) {
+            clearTimeout(timer);
             status = false;
         }
         if (!status) {

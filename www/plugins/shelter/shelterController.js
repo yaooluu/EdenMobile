@@ -36,7 +36,8 @@
     var formList = {
         "shelter": {
             form_path: "/cr/shelter.s3json",
-            form_record: "$_cr_shelter"
+            form_record: "$_cr_shelter",
+            page: "page-shelter"
         }
     };
 
@@ -124,6 +125,21 @@
 
     controller.prototype.updateList = function (name, data) {
         console.log("shelterController: updateList " + name);
+        //var page = app.view.getPage("page-cases");
+        //var caseStruct = app.controller.getData("case");
+        //var serverCases = caseStruct["$_disease_case"];
+        var formItem = formList[name];
+        var pageName = formItem["page"];
+        var page = app.view.getPage(pageName);
+        var modelList = app.controller.getRecordCollection("mShelter");
+        
+
+        // Initialize list server state to detect deleted items
+        for (var key in modelList) {
+            var model = modelList[key];
+            model._serverState = 0;
+        }
+
 
     };
 

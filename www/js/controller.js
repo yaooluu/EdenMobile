@@ -73,6 +73,15 @@
         }
         return undefined;
     };
+    
+    controller.prototype.newRecordCollection = function (type) {
+        //var modelObj = this.getModel(type);
+        var newCollection = {}; //new Backbone.Collection({
+        //    model: modelObj
+        //});
+        this._recordDb[type] = newCollection;
+        return newCollection;
+    };
 
     controller.prototype.getRecordCollection = function (type) {
         return this._recordDb[type];
@@ -107,6 +116,9 @@
 
     controller.prototype.addModel = function (modelList) {
         this._modelList = _.extend(this._modelList, modelList);
+        for (var key in modelList) {
+            this.newRecordCollection(key,modelList[key]);
+        }
     }
 
     controller.prototype.getModel = function (modelName) {

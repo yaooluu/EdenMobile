@@ -118,19 +118,19 @@
                     timer = setTimeout(onTimeout,REQ_WAIT_INCREMENT);
                 }
             
-            console.log("newRequestData: onReadyStateChange: " + 
-                        id + " " +
-                        xhr.readyState + " " + 
-                        xhr.status + " " + elapsed);
+            //console.log("newRequestData: onReadyStateChange: " + 
+            //            id + " " +
+            //            xhr.readyState + " " + 
+            //            xhr.status + " " + elapsed);
             }
         }
 
         function onProgress(evt) {
-            console.log("newRequestData: onProgress: " + 
-                        id + " " + evt.loaded);
+            //console.log("newRequestData: onProgress: " + 
+            //            id + " " + evt.loaded);
             if (evt.lengthComputable) {
                 var value = (evt.loaded / evt.total) * 100;
-                console.log("\t" + value + "%");
+                //console.log("\t" + value + "%");
             }
         }
 

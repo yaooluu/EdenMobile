@@ -81,7 +81,7 @@
 
 
             // Call the original constructor
-            Backbone.View.apply(this, arguments);
+            Backbone.Model.apply(this, arguments);
         },
 
         initialize: function (options) {

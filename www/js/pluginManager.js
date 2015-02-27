@@ -93,9 +93,9 @@
                     break;
                 case "model":
                     {
-                        var modelData = {};
-                        modelData[name] = obj;
-                        app.controller.addModel(modelData);
+                        //var modelData = {};
+                        //modelData[name] = obj;
+                        //app.controller.addModel(modelData);
 
                     }
                     break;

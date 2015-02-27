@@ -26,7 +26,7 @@
     var mFormData = app.controller.getModel("mFormData");
     var mShelter = mFormData.extend({
         initialize: function (options) {
-            mFormData.prototype.initialize.call(this, arguments);
+            //mFormData.prototype.initialize.call(this, arguments);
 
             this._type = "shelter";
         },

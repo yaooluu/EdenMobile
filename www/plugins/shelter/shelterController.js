@@ -31,8 +31,8 @@
             form_record: "$_gis_location"
         }
     };
-    
-    
+
+
     var formList = {
         "shelter": {
             form_path: "/cr/shelter.s3json",
@@ -132,7 +132,7 @@
         var pageName = formItem["page"];
         var page = app.view.getPage(pageName);
         var modelList = app.controller.getRecordCollection("mShelter");
-        
+
 
         // Initialize list server state to detect deleted items
         for (var key in modelList) {
@@ -140,6 +140,55 @@
             model._serverState = 0;
         }
 
+
+        // Loop through all data records
+        var recordList = data[formItem["form_record"]];
+        for (var i = 0; i < recordList.length; i++) {
+            var recordItem = recordList[i];
+            var uuid = recordItem["@uuid"];
+            var timestamp = Date.parse(recordItem["@modified_on"]);
+            var model = modelList[uuid];
+
+            if (!model) {
+                var modelObj = app.controller.getModel("mShelter");
+                model = new modelObj();
+                model.timestamp(1); // force the new data condition to be true
+            }
+            model._serverState = 1;
+
+            if (model.timestamp() < timestamp) {
+                // Get data from case to put in the model
+                var formOptions = {};
+                
+                // TODO get the model data
+                formOptions["rawData"] = recordItem;
+                formOptions["uuid"] = uuid;
+                for (var key in recordItem) {
+                    var item = recordItem[key];
+                    if (key.indexOf("$k_") >= 0) {
+                        var subkey = key.slice(3);
+                        formOptions[subkey] = item["@uuid"];
+                    } else if (key.indexOf("@") >= 0) {
+                        // Do nothing, this is meta-data
+                        continue;
+                    } else if (item instanceof Array) {
+                        formOptions[key] = item;
+                    } else if (typeof item === 'object') {
+                        formOptions[key] = item["@value"];
+                    } else {
+                        formOptions[key] = item;
+                    }
+                }
+
+                // Put the data into the model
+                model.set(formOptions);
+                modelList[uuid] = model;
+                model.timestamp(timestamp);
+                var path = model.getKey();
+                app.storage.write(path, JSON.stringify(model));
+                page.setItem(model);
+            }
+        }
 
     };
 

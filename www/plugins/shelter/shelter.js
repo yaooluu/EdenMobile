@@ -78,15 +78,12 @@
             "<input id='edit' class='edit-button' value='Edit' type='button'>" +
             "<input id='monitor' class='edit-button' value='Monitor' type='button'>" +
             "</td>" +
-            "<td class='se-column-all'><%= case_number %></td> " +
-            "<td class='se-column-all'><%= name %></td>" +
-            "<td class='se-column-medium'><%= disease %></td>" +
-            "<td class='se-column-medium'><%= location %></td>" +
-            "<td class='se-column-medium'><%= illness_status %></td>" +
-            "<td class='se-column-large'><%= symptom_debut %></td>" +
-            "<td class='se-column-large'><%= diagnosis_status %></td>" +
-            "<td class='se-column-large'><%= diagnosis_date %></td>" +
-            "<td class='se-column-medium'><%= monitoring_level %></td>"
+            "<td class='se-column-all'><%= name %></td> " +
+            "<td class='se-column-all'><%= status %></td>" +
+            "<td class='se-column-medium'><%= shelter_type_id %></td>" +
+            "<td class='se-column-medium'><%= population %></td>" +
+            "<td class='se-column-medium'><%= addr_street %></td>" +
+            "<td class='se-column-large'><%= L0 %></td>" 
 
         ),
         events: {
@@ -105,15 +102,7 @@
 
             // records loaded from the server have more data than locally stored
             if (this.model.get("uuid")) {
-                var itemData = this.model.get("rawData");
-                var templateData = {
-                    "name": this.model.get("name"),
-                    "item_number": this.model.get("item_number"),
-                    "disease": this.model.get("disease"),
-                    "location": "-",
-                    "symptom_debut": this.model.get("symptom_debut") || "" //,
-                };
-                var fieldList = ["illness_status", "diagnosis_status", "diagnosis_date", "monitoring_level"];
+                /*
                 for (var i = 0; i < fieldList.length; i++) {
                     var fieldName = fieldList[i];
                     if (itemData[fieldName]) {
@@ -122,7 +111,27 @@
                         templateData[fieldName] = "";
                     }
                 }
-            } else {
+                */
+                var itemData = this.model.get("rawData");
+                var templateData = {
+                    "name": this.model.get("name"),
+                    "status": this.model.get("status"),
+                    "shelter_type_id": this.model.get("shelter_type_id"),
+                    "population": this.model.get("population"),
+                    "addr_street": "addr_street",
+                    "L0": "L0"
+               };
+                /*
+                var fieldList = ["illness_status", "diagnosis_status", "diagnosis_date", "monitoring_level"];
+                for (var i = 0; i < fieldList.length; i++) {
+                    var fieldName = fieldList[i];
+                    if (itemData[fieldName]) {
+                        templateData[fieldName] = itemData[fieldName]["$"];
+                    } else {
+                        templateData[fieldName] = "";
+                    }
+                }*/
+            } /*else {
                 // This is for records that were created while offline
                 var templateData = {
                     "name": this.model.get("person_id-string"),
@@ -136,7 +145,7 @@
                     var fieldName = fieldList[i];
                     templateData[fieldName] = this.model.get(fieldName + "-string") || "";
                 }
-            }
+            } */
             this.$el.html(this.template(templateData));
 
             return this;
@@ -234,17 +243,17 @@
         setItem: function (model) {
             // first check to see if the item element already exists
             var itemElement = null;
-            for (var i = 0; i < this.itemList.length; i++) {
-                if (this.itemList[i].model === model) {
-                    itemElement = this.itemList[i];
+            for (var i = 0; i < this._itemList.length; i++) {
+                if (this._itemList[i].model === model) {
+                    itemElement = this._itemList[i];
                     break;
                 }
             }
             if (!itemElement) {
-                itemElement = new itemsItemElement({
+                itemElement = new shelterItemElement({
                     model: model
                 });
-                this.itemList.push(itemElement);
+                this._itemList.push(itemElement);
                 var tableBody = this.$el.find("tbody");
                 tableBody.append(itemElement.$el);
                 itemElement.render();
@@ -254,11 +263,11 @@
         removeItem: function (model) {
             // first check to see if the item element already exists
             var itemElement = null;
-            for (var i = 0; i < this.itemList.length; i++) {
-                if (this.itemList[i].model === model) {
-                    itemElement = this.itemList[i];
+            for (var i = 0; i < this._itemList.length; i++) {
+                if (this._itemList[i].model === model) {
+                    itemElement = this._itemList[i];
                     itemElement.remove();
-                    this.itemList.splice(i, 1);
+                    this._itemList.splice(i, 1);
                     break;
                 }
             }

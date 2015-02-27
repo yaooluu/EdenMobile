@@ -40,6 +40,7 @@
 
             // Create and initialize state
             this._content_template = null;
+            this._itemList = [];
             //this.index = -1;
             this.back = true;
             //this.position = 1;

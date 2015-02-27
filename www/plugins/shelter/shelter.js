@@ -74,9 +74,9 @@
         tagName: "tr",
         //className: "accordian",
         name: "",
-        template: _.template("<td class='actions se-column-all'>" +
+        template: null, /*_.template("<td class='actions se-column-all'>" +
             "<input id='edit' class='edit-button' value='Edit' type='button'>" +
-            "<input id='monitor' class='edit-button' value='Monitor' type='button'>" +
+            //"<input id='monitor' class='edit-button' value='Monitor' type='button'>" +
             "</td>" +
             "<td class='se-column-all'><%= name %></td> " +
             "<td class='se-column-all'><%= status %></td>" +
@@ -85,7 +85,7 @@
             "<td class='se-column-medium'><%= addr_street %></td>" +
             "<td class='se-column-large'><%= L0 %></td>" 
 
-        ),
+        ),*/
         events: {
             //"click #link-button": "navigate",
 
@@ -96,7 +96,15 @@
             // Set up model change event
             var model = this.model;
             model.on("change", this.update.bind(this));
-
+            this.template = this.createTemplate(shelterTable);
+        },
+        createTemplate: function(table) {
+            var templateString = "<td class='actions se-column-all'><input id='edit' class='edit-button' value='Edit' type='button'></td>";
+            for (var i = 0; i < table.length; i++) {
+                var tableItem = table[i];
+                templateString += "<td class='se-column-" + tableItem["table_priority"] + "'><%= " + tableItem["name"] + " %></td>";
+            }
+            return _.template(templateString);
         },
         render: function () {
 
@@ -159,7 +167,7 @@
         onEdit: function () {
             console.log("itemsItemElement onEdit");
             var controller = app.controller.getControllerByModel("item");
-            controller.editItem(this.model);
+            //controller.editItem(this.model);
         },
 
     });
@@ -292,7 +300,7 @@
 
         onRefreshList: function (event) {
             console.log("onRefreshList ");
-            app.controller.updateData("item");
+            app.controller.updateData("shelter");
         },
 
         updateForm: function (obj) {

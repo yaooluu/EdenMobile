@@ -110,6 +110,7 @@
 
             // records loaded from the server have more data than locally stored
             if (this.model.get("uuid")) {
+                var templateData = this.model.getData(shelterTable);
                 /*
                 for (var i = 0; i < fieldList.length; i++) {
                     var fieldName = fieldList[i];
@@ -120,7 +121,8 @@
                     }
                 }
                 */
-                var itemData = this.model.get("rawData");
+                //var itemData = this.model.get("rawData");
+                /*
                 var templateData = {
                     "name": this.model.get("name"),
                     "status": this.model.get("status"),
@@ -129,6 +131,7 @@
                     "addr_street": "addr_street",
                     "L0": "L0"
                };
+               */
                 /*
                 var fieldList = ["illness_status", "diagnosis_status", "diagnosis_date", "monitoring_level"];
                 for (var i = 0; i < fieldList.length; i++) {

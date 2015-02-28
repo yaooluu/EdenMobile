@@ -145,6 +145,23 @@
 
         sendData: function () {
             console.log("mFormData::sendData not implemented, should be overridden");
+        },
+        
+        getData: function(table) {
+            var rawData = this.get("rawData");
+            var data = {};
+            for (var i = 0; i < table.length; i++) {
+                var tableItem = table[i];
+                var name = tableItem["name"];
+                var value = this.get(name);
+                if (value) {
+                    data[name] = value;
+                }
+                else {
+                    data[name] = name;
+                }
+            }
+            return data;
         }
 
 

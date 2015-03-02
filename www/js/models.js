@@ -146,19 +146,68 @@
         sendData: function () {
             console.log("mFormData::sendData not implemented, should be overridden");
         },
-        
-        getData: function(table) {
+
+        getData: function (table) {
             var rawData = this.get("rawData");
             var data = {};
             for (var i = 0; i < table.length; i++) {
                 var tableItem = table[i];
                 var name = tableItem["name"];
-                var value = this.get(name);
-                if (value) {
-                    data[name] = value;
+                var path = tableItem["form_path"].split("/");
+                /*
+                var dataItem = rawData;
+                for (var j = 0; j < path.length; j++) {
+                    dataItem = dataItem[path[j]];
+                    if (!dataItem) {
+                        break;
+                    }
                 }
-                else {
-                    data[name] = name;
+                if (!dataItem) {
+                    continue;
+                }
+                var value = dataItem[name];
+                */
+
+
+
+                if (tableItem["reference"]) {
+                    // If there is a data_path field in the table reference, then
+                    // the value is referenced from another db table, and not the
+                    // main record.  You must go back to the root of the download
+                    // and follow the data_path
+                    var referenceName = tableItem["reference"];
+                    var referenceRecord = rawData[referenceName];
+                    var referenceUuid = referenceRecord["@uuid"];
+                    var referenceResource = referenceRecord["@resource"];
+                    var serverData = app.controller.getData(this._type);
+                    var referenceArray = serverData["$_" + referenceResource];
+                    for (var j  = 0; j < referenceArray.length; j++) {
+                        var referenceItem = referenceArray[j];
+                        if (referenceItem["@uuid"] === referenceUuid) {
+                            data[name] = referenceItem[name]["$"];
+                            break;
+                        }
+                    }
+                    
+                    //data[name] = name;
+                } else {
+                    var value = rawData[name];
+                    if (typeof value === "string") {
+                        data[name] = value;
+                    } else if (typeof value === "number") {
+                        data[name] = value;
+                    } else if (name.indexOf("$_") >= 0) {
+                        data[name] = value["$"];
+                    } else if (typeof value === "object") {
+                        data[name] = value["$"];
+                    } else {
+                        var reference = rawData["$k_" + name];
+                        if (reference) {
+                            data[name] = reference["$"];
+                        } else {
+                            data[name] = "unknown";
+                        }
+                    }
                 }
             }
             return data;

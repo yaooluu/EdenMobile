@@ -56,6 +56,8 @@
         {
             name: "addr_street",
             form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
             form: "gis-location-form",
             table_priority: "medium",
             label: ""
@@ -63,6 +65,8 @@
         {
             name: "L0",
             form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
             form: "gis-location-form",
             common_name: "Country",
             table_priority: "large",
@@ -74,21 +78,8 @@
         tagName: "tr",
         //className: "accordian",
         name: "",
-        template: null, /*_.template("<td class='actions se-column-all'>" +
-            "<input id='edit' class='edit-button' value='Edit' type='button'>" +
-            //"<input id='monitor' class='edit-button' value='Monitor' type='button'>" +
-            "</td>" +
-            "<td class='se-column-all'><%= name %></td> " +
-            "<td class='se-column-all'><%= status %></td>" +
-            "<td class='se-column-medium'><%= shelter_type_id %></td>" +
-            "<td class='se-column-medium'><%= population %></td>" +
-            "<td class='se-column-medium'><%= addr_street %></td>" +
-            "<td class='se-column-large'><%= L0 %></td>" 
-
-        ),*/
+        template: null, 
         events: {
-            //"click #link-button": "navigate",
-
             "click input#edit": "onEdit"
 
         },
@@ -109,54 +100,7 @@
         render: function () {
 
             // records loaded from the server have more data than locally stored
-            if (this.model.get("uuid")) {
-                var templateData = this.model.getData(shelterTable);
-                /*
-                for (var i = 0; i < fieldList.length; i++) {
-                    var fieldName = fieldList[i];
-                    if (itemData[fieldName]) {
-                        templateData[fieldName] = itemData[fieldName]["$"];
-                    } else {
-                        templateData[fieldName] = "";
-                    }
-                }
-                */
-                //var itemData = this.model.get("rawData");
-                /*
-                var templateData = {
-                    "name": this.model.get("name"),
-                    "status": this.model.get("status"),
-                    "shelter_type_id": this.model.get("shelter_type_id"),
-                    "population": this.model.get("population"),
-                    "addr_street": "addr_street",
-                    "L0": "L0"
-               };
-               */
-                /*
-                var fieldList = ["illness_status", "diagnosis_status", "diagnosis_date", "monitoring_level"];
-                for (var i = 0; i < fieldList.length; i++) {
-                    var fieldName = fieldList[i];
-                    if (itemData[fieldName]) {
-                        templateData[fieldName] = itemData[fieldName]["$"];
-                    } else {
-                        templateData[fieldName] = "";
-                    }
-                }*/
-            } /*else {
-                // This is for records that were created while offline
-                var templateData = {
-                    "name": this.model.get("person_id-string"),
-                    "item_number": this.model.get("item_number"),
-                    "disease": this.model.get("disease_id-string"),
-                    "location": "-",
-                    "symptom_debut": this.model.get("symptom_debut") || "" //,
-                };
-                var fieldList = ["illness_status", "diagnosis_status", "diagnosis_date", "monitoring_level"];
-                for (var i = 0; i < fieldList.length; i++) {
-                    var fieldName = fieldList[i];
-                    templateData[fieldName] = this.model.get(fieldName + "-string") || "";
-                }
-            } */
+            var templateData = this.model.getData(shelterTable);
             this.$el.html(this.template(templateData));
 
             return this;

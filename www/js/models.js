@@ -184,7 +184,12 @@
                     for (var j  = 0; j < referenceArray.length; j++) {
                         var referenceItem = referenceArray[j];
                         if (referenceItem["@uuid"] === referenceUuid) {
-                            data[name] = referenceItem[name]["$"];
+                            if (referenceItem[name]) {
+                                data[name] = referenceItem[name]["$"];
+                            }
+                            else {
+                                data[name] = "-";
+                            }
                             break;
                         }
                     }

@@ -113,8 +113,8 @@
 
         onEdit: function () {
             console.log("itemsItemElement onEdit");
-            var controller = app.controller.getControllerByModel("item");
-            //controller.editItem(this.model);
+            var controller = app.controller.getControllerByModel("shelter");
+            controller.editItem(this.model);
         },
 
     });
@@ -152,7 +152,7 @@
         events: {
             "click #link-button": "navigate",
             "click #new-item": "onNewItem",
-            "click #refresh-item-list": "onRefreshList"
+            "click #refresh-list": "onRefreshList"
         },
         initialize: function (options) {
             console.log("initialize shelters page");
@@ -242,7 +242,7 @@
             console.log("onNewItem ");
             var controller = app.controller.getControllerByModel("shelter");
             controller.newItem();
-            this.trigger("navigate", "page-new-item");
+            this.trigger("navigate", "page-edit-shelter");
         },
 
         onRefreshList: function (event) {
@@ -337,7 +337,15 @@
 
         updateData: function (obj) {
             console.log("page-shelter updateData");
-        }
+        },
+        
+        setEvents: function() {
+        this.delegateEvents();
+                    for (var i = 0; i < this._itemList.length; i++) {
+                this._itemList[i].delegateEvents();
+            }
+
+    }
     });
 
     app.pluginManager.addObject(sheltersPage);

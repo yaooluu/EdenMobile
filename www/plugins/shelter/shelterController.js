@@ -256,11 +256,22 @@
     };
 
     controller.prototype.newItem = function () {
-
-
+        var form = app.controller.getForm("shelter-form");
+        //var model = new mCaseData(form.get("form"));
+        var modelObj = app.controller.getModel("mShelter");
+        var model = new modelObj(form.get("form"));
+        //model.timestamp(Date.now());
+        form.set("current", model);
+        var page = app.view.getPage("page-edit-shelter");
+        page.showForm(form, model);
     };
 
     controller.prototype.editItem = function (model) {
+        var form = app.controller.getForm("shelter-form");
+        var page = app.view.getPage("page-edit-shelter");
+        form.set("current", model);
+        page.showForm(form, model);
+        app.view.changePage("page-edit-shelter");
 
     };
 

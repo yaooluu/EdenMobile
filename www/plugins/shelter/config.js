@@ -32,7 +32,15 @@
             classname: "shelterPage",
             backButton: true
         },
-        {
+         {
+            type: "page",
+            name: "edit-shelter",
+            template: "editShelter.htm",
+            script: "editShelter.js",
+            classname: "editShelterPage",
+            backButton: true
+        },
+       {
             type: "model",
             name: "mShelter",
             script: "mShelter.js",

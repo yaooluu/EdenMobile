@@ -47,11 +47,11 @@
         },
         {
             name: "addr_street",
-            control: "select"
+            control: "string"
         },
         {
-            name: "Postcode",
-            control: "select"
+            name: "postcode",
+            control: "string"
         },
         {
             name: "location",
@@ -59,11 +59,11 @@
         },
         {
             name: "phone",
-            control: "select"
+            control: "string"
         },
         {
             name: "email",
-            control: "select"
+            control: "string"
         },
         {
             name: "person_id",
@@ -71,19 +71,19 @@
         },
         {
             name: "population",
-            control: "select"
+            control: "string"
         },
         {
             name: "capacity_day",
-            control: "select"
+            control: "string"
         },
         {
             name: "evacuees_day",
-            control: "select"
+            control: "string"
         },
         {
             name: "capacity_night",
-            control: "select"
+            control: "string"
         },
          {
             name: "status",
@@ -91,7 +91,11 @@
         },
        {
             name: "comments",
-            control: "select"
+            control: "string"
+        },
+        {
+            name: "obsolete",
+            control: "checkbox"
         },
         {
             name: "footer",

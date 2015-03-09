@@ -166,6 +166,7 @@
         _data: null,
         _name: "",
         _label: "",
+        _default: null,
         commonEvents: {},
 
         constructor: function (options) {
@@ -199,11 +200,14 @@
 
         setEvents: function () {
             this.delegateEvents();
+        },
+        reset: function() {
         }
     });
 
     var stringControl = formControl.extend({
-        type: "string",
+        _type: "string",
+        _default: "",
         template: _.template(
         "<div id='<% id %>' name='<% name %>' data-role='fieldcontain' class='se-form-control-string'>" +
             "<label><% label %></label>" +
@@ -211,6 +215,7 @@
             "</div>"),
         initialize: function (options) {
             console.log("formControl intialize should not be called");
+            this.reset();
         },
         render: function () {
             //this.$el.attr();
@@ -233,6 +238,9 @@
             console.log("stringControl getData");
             this._data = this.$el.find("input").html();
             return this._data;;
+        },
+        reset: function() {
+            this.setData(this._default);
         }
     });
 

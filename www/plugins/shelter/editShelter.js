@@ -24,7 +24,80 @@
 (function ($, window, document, undefined) {
 
 
-    var editShelterTable = [
+    var editShelterForm = [
+        {
+            name: "name",
+            control: "string"
+        },
+        {
+            name: "organisation_id",
+            control: "select"
+        },
+        {
+            name: "shelter_type_id",
+            control: "select"
+        },
+        {
+            name: "shelter_service_id",
+            control: "select"
+        },
+        {
+            name: "L0",
+            control: "select"
+        },
+        {
+            name: "addr_street",
+            control: "select"
+        },
+        {
+            name: "Postcode",
+            control: "select"
+        },
+        {
+            name: "location",
+            control: "gis_button"
+        },
+        {
+            name: "phone",
+            control: "select"
+        },
+        {
+            name: "email",
+            control: "select"
+        },
+        {
+            name: "person_id",
+            control: "select"
+        },
+        {
+            name: "population",
+            control: "select"
+        },
+        {
+            name: "capacity_day",
+            control: "select"
+        },
+        {
+            name: "evacuees_day",
+            control: "select"
+        },
+        {
+            name: "capacity_night",
+            control: "select"
+        },
+         {
+            name: "status",
+            control: "select"
+        },
+       {
+            name: "comments",
+            control: "select"
+        },
+        {
+            name: "footer",
+            control: "text"
+        }
+        /*
         {
             name: "name",
             form_path: "$_cr_shelter/field",
@@ -71,7 +144,8 @@
             common_name: "Country",
             table_priority: "large",
             label: ""
-        }];
+        }
+        */];
 
     var pageView = app.view.getPage("pageView");
     var editSheltersPage = pageView.extend({ //pageView.extend({
@@ -82,7 +156,7 @@
             "<div class='fixed'>" +
             "<div class='row'>" +
             "<nav class='top-bar' data-topbar=' '>" +
-            "<ul class='itle-area'>" +
+            "<ul class='title-area'>" +
             "<li class='name'>" +
             "<h1><a >New Shelter</a></h1>" +
             "</li>" +
@@ -109,6 +183,21 @@
             if (name) {
                 this.name = name;
             }
+            
+            // Add the controls
+            this.controlList = [];
+            for (var i = 0; i < editShelterForm.length; i++) {
+                var tableItem = editShelterForm[i];
+                var controlName = tableItem.name;
+                var controlType = tableItem.control;
+                var control = app.view.getControl(controlType);
+                if (control) {
+                    console.log("control found " + controlType); 
+                    var item = new control({name: controlName});
+                    this.controlList.push(item);
+                    
+                }
+            }
         },
         setContent: function (content) {
             if (content) {
@@ -123,8 +212,14 @@
             if (this.content_template) {
                 this.$el.find("#content").append(this.content_template({}));
             }
+            
+            // Add controls
+            var container  = this.$el.find("#form-controls");
+            for (var i = 0; i < this.controlList.length; i++) {
+                container.append(this.controlList[i].render());
+            }
 
-            return this;
+            return this.$el;
         },
         
         updateItem: function(obj) {

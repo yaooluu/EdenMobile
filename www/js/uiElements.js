@@ -23,8 +23,12 @@
 ;
 (function ($, window, document, undefined) {
 
-    // Page superclass
 
+    //--------------------------------------------------------------------------
+    //
+    // Page classes
+    //
+    //--------------------------------------------------------------------------
 
     var pageView = Backbone.View.extend({
 
@@ -34,9 +38,9 @@
 
         constructor: function (options) {
             console.log("pageView constructor");
-            
+
             // Resolve events between super and sub class
-            this.events = _.extend({},this.commonEvents,this.events);
+            this.events = _.extend({}, this.commonEvents, this.events);
 
             // Create and initialize state
             this._content_template = null;
@@ -108,14 +112,14 @@
                 element.addClass("active");
             }
         },
-        
-        updateForm: function(obj) {
+
+        updateForm: function (obj) {
             // This function should be implemented by a child view
             // It is called when a form record is loaded
             console.log("pageView.updateForm not implemented");
         },
-        
-        updateData: function(obj) {
+
+        updateData: function (obj) {
             // This function should be implemented by a child view
             // It is called when a data from the server is recieved
             console.log("pageView.updateData not implemented");
@@ -147,9 +151,96 @@
             });
             this.$el.html(this.template({}));
             return this;
-        },
+        }
 
     });
+
+    //--------------------------------------------------------------------------
+    //
+    // Form controls
+    //
+    //--------------------------------------------------------------------------
+
+    var formControl = Backbone.View.extend({
+        _type: "none",
+        _data: null,
+        _name: "",
+        _label: "",
+        commonEvents: {},
+
+        constructor: function (options) {
+            console.log("pageView constructor");
+
+            // Resolve events between super and sub class
+            this.events = _.extend({}, this.commonEvents, this.events);
+
+            // Call the original constructor
+            Backbone.View.apply(this, arguments);
+        },
+        initialize: function (options) {
+            console.log("formControl intialize should not be called");
+        },
+        render: function () {
+            this.$el.attr({
+                "id": name
+            });
+            this.$el.html(this.template({}));
+            return this;
+        },
+
+        setData: function (value) {
+            console.log("formControl intialize should not be called");
+        },
+
+        getData: function () {
+            console.log("formControl intialize should not be called");
+            return undefined;
+        },
+
+        setEvents: function () {
+            this.delegateEvents();
+        }
+    });
+
+    var stringControl = formControl.extend({
+        type: "string",
+        template: _.template(
+        "<div id='<% id %>' name='<% name %>' data-role='fieldcontain' class='se-form-control-string'>" +
+            "<label><% label %></label>" +
+            "<input id='input' type='string' name='<% name %>' />" +
+            "</div>"),
+        initialize: function (options) {
+            console.log("formControl intialize should not be called");
+        },
+        render: function () {
+            //this.$el.attr();
+            this.$el.html(this.template({
+                id: this._name,
+                label: this._label,
+                name: this._name
+
+            }));
+            return this.$el;
+        },
+
+        setData: function (data) {
+            console.log("stringControl setData");
+            this._data = data;
+            this.$el.find("input").html(data);
+        },
+
+        getData: function () {
+            console.log("stringControl getData");
+            this._data = this.$el.find("input").html();
+            return this._data;;
+        }
+    });
+
+    //--------------------------------------------------------------------------
+    //
+    // Dialogs
+    //
+    //--------------------------------------------------------------------------
 
     var confirmDialog = Backbone.View.extend({
         //tagName: "fieldset",
@@ -283,6 +374,7 @@
     app.view.addPage("mainPage", mainPage);
     app.view.addPage("confirmDialog", confirmDialog);
     app.view.addPage("loginDialog", loginDialog);
+    app.view.addControl("string",stringControl);
 
 
 })(jQuery, window, document);

@@ -25,6 +25,7 @@
     function view() {
         this.pageSet = {}; // Collection of all active pages
         this.pageStack = []; // Page navigation stack
+        this.controlSet = {};
         //this.loadFormArray = [];
         //this.savedFormArray = [];
     };
@@ -72,6 +73,16 @@
 
     view.prototype.getPage = function (name) {
         return this.pageSet[name];
+    };
+    
+    view.prototype.addControl = function(name, control) {
+        if (control) {
+            this.controlSet[name] = control;
+        }
+    };
+    
+    view.prototype.getControl = function(name) {
+        return this.controlSet[name];
     };
 
 

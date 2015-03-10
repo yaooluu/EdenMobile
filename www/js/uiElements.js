@@ -222,9 +222,9 @@
         _type: "string",
         _default: "",
         template: _.template(
-        "<div id='<% id %>' name='<% name %>' data-role='fieldcontain' class='se-form-control-string'>" +
-            "<label><% label %></label>" +
-            "<input id='input' type='string' name='<% name %>' />" +
+        "<div id='<%= id %>' name='<%= name %>' data-role='fieldcontain' class='se-form-control-string'>" +
+            "<label><%= label %></label>" +
+            "<input id='input' type='string' name='<%= name %>' />" +
             "</div>"),
         initialize: function (options) {
             console.log("formControl intialize should not be called");
@@ -234,7 +234,7 @@
             //this.$el.attr();
             this.$el.html(this.template({
                 id: this._name,
-                label: this._name,
+                label: this._label,
                 name: this._name
 
             }));
@@ -249,7 +249,7 @@
                 this._label = record["@label"];
                 var element = this.$el.find("label");
                 if (element.length) {
-                    //element.html(this._label);
+                    element.html(this._label);
                 }
             }
         },

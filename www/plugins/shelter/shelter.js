@@ -80,7 +80,7 @@
         name: "",
         template: null, 
         events: {
-            "click input#edit": "onEdit"
+            "click input#open": "onOpen"
 
         },
         initialize: function (options) {
@@ -90,7 +90,7 @@
             this.template = this.createTemplate(shelterTable);
         },
         createTemplate: function(table) {
-            var templateString = "<td class='actions se-column-all'><input id='edit' class='edit-button' value='Edit' type='button'></td>";
+            var templateString = "<td class='actions se-column-all'><input id='open' class='edit-button' value='Open' type='button'></td>";
             for (var i = 0; i < table.length; i++) {
                 var tableItem = table[i];
                 templateString += "<td class='se-column-" + tableItem["table_priority"] + "'><%= " + tableItem["name"] + " %></td>";
@@ -111,8 +111,8 @@
             this.render();
         },
 
-        onEdit: function () {
-            console.log("itemsItemElement onEdit");
+        onOpen: function () {
+            console.log("itemsItemElement onOpen");
             var controller = app.controller.getControllerByModel("shelter");
             controller.editItem(this.model);
         },
@@ -228,7 +228,7 @@
             }
         },
 
-        onEditItem: function (event) {
+        onOpenItem: function (event) {
             console.log("edit");
         },
 

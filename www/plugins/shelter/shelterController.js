@@ -47,6 +47,12 @@
             //tableSpec: shelterTable,
             req: ["shelter-form", "gis-location-form"],
             page: "page-shelter"
+        },
+    {
+            name: "editShelterForm",
+            //tableSpec: shelterTable,
+            req: ["shelter-form", "gis-location-form"],
+            page: "page-edit-shelter"
         }];
 
     // The master application controller

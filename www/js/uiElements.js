@@ -166,6 +166,7 @@
         _data: null,
         _name: "",
         _label: "",
+        _common_name: null,
         _default: null,
         commonEvents: {},
 
@@ -174,6 +175,14 @@
 
             // Resolve events between super and sub class
             this.events = _.extend({}, this.commonEvents, this.events);
+            
+            if (options.name) {
+                this._name = options.name;
+            }
+            if (options.common_name) {
+                this._common_name = options.common_name;
+                this._label = options.common_name;
+            }
 
             // Call the original constructor
             Backbone.View.apply(this, arguments);
@@ -189,12 +198,16 @@
             return this;
         },
 
+        setControl: function (value) {
+            console.log("formControl setControl should not be called");
+        },
+
         setData: function (value) {
-            console.log("formControl intialize should not be called");
+            console.log("formControl setData should not be called");
         },
 
         getData: function () {
-            console.log("formControl intialize should not be called");
+            console.log("formControl getData should not be called");
             return undefined;
         },
 
@@ -221,11 +234,24 @@
             //this.$el.attr();
             this.$el.html(this.template({
                 id: this._name,
-                label: this._label,
+                label: this._name,
                 name: this._name
 
             }));
             return this.$el;
+        },
+        
+        setControl: function(record) {
+            if (this._common_name) {
+                return;
+            }
+            if (record["@label"]) {
+                this._label = record["@label"];
+                var element = this.$el.find("label");
+                if (element.length) {
+                    //element.html(this._label);
+                }
+            }
         },
 
         setData: function (data) {

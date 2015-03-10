@@ -27,7 +27,10 @@
     var editShelterForm = [
         {
             name: "name",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "organisation_id",
@@ -35,7 +38,10 @@
         },
         {
             name: "shelter_type_id",
-            control: "select"
+            control: "select",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "shelter_service_id",
@@ -43,11 +49,22 @@
         },
         {
             name: "L0",
-            control: "select"
-        },
+            control: "select",
+            form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            common_name: "Country",
+            label: ""
+       },
         {
             name: "addr_street",
-            control: "string"
+            control: "string",
+            form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            label: ""
         },
         {
             name: "postcode",
@@ -71,7 +88,10 @@
         },
         {
             name: "population",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "capacity_day",
@@ -85,11 +105,14 @@
             name: "capacity_night",
             control: "string"
         },
-         {
+        {
             name: "status",
-            control: "select"
+            control: "select",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
-       {
+        {
             name: "comments",
             control: "string"
         },
@@ -101,55 +124,7 @@
             name: "footer",
             control: "text"
         }
-        /*
-        {
-            name: "name",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            table_priority: "all",
-            label: ""
-        },
-        {
-            name: "status",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            table_priority: "all",
-            label: ""
-        },
-        {
-            name: "shelter_type_id",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            table_priority: "medium",
-            label: ""
-        },
-        {
-            name: "population",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            table_priority: "medium",
-            label: ""
-        },
-        {
-            name: "addr_street",
-            form_path: "$_gis_location/field",
-            data_path: "$_gis_location/field",
-            reference: "$k_location_id",
-            form: "gis-location-form",
-            table_priority: "medium",
-            label: ""
-        },
-        {
-            name: "L0",
-            form_path: "$_gis_location/field",
-            data_path: "$_gis_location/field",
-            reference: "$k_location_id",
-            form: "gis-location-form",
-            common_name: "Country",
-            table_priority: "large",
-            label: ""
-        }
-        */];
+        ];
 
     var pageView = app.view.getPage("pageView");
     var editSheltersPage = pageView.extend({ //pageView.extend({
@@ -187,7 +162,7 @@
             if (name) {
                 this.name = name;
             }
-            
+
             // Add the controls
             this.controlList = [];
             for (var i = 0; i < editShelterForm.length; i++) {
@@ -196,10 +171,13 @@
                 var controlType = tableItem.control;
                 var control = app.view.getControl(controlType);
                 if (control) {
-                    console.log("control found " + controlType); 
-                    var item = new control({name: controlName});
+                    console.log("control found " + controlType);
+                    var item = new control({
+                        name: controlName,
+                        common_name: tableItem.common_name
+                    });
                     this.controlList.push(item);
-                    
+
                 }
             }
         },
@@ -216,25 +194,69 @@
             if (this.content_template) {
                 this.$el.find("#content").append(this.content_template({}));
             }
-            
+
             // Add controls
-            var container  = this.$el.find("#form-controls");
+            var container = this.$el.find("#form-controls");
             for (var i = 0; i < this.controlList.length; i++) {
                 container.append(this.controlList[i].render());
             }
 
             return this.$el;
         },
-        
-        updateItem: function(obj) {
+
+        updateItem: function (obj) {
             console.log("editShelter updateItem");
         },
-        
-        showForm: function(form, model) {
+
+        updateForm: function (obj) {
+            for (var i = 0; i < editShelterForm.length; i++) {
+                var record = obj;
+                var label = "";
+                var value = "";
+                var columnItem = editShelterForm[i];
+                var columnName = columnItem["name"];
+                var path = columnItem["form_path"];
+                if (!path) { continue; }
+                var pathList = path.split("/");
+                for (var j = 0; j < pathList.length; j++) {
+                    var pathItem = pathList[j];
+
+                    if (!record[pathItem]) {
+                        record = null;
+                        break;
+                    }
+                    if (pathItem.indexOf("$_") >= 0) {
+                        record = record[pathItem][0];
+                    } else {
+                        record = record[pathItem];
+                    }
+                }
+                if (!record) {
+                    continue;
+                }
+                
+                // update the control
+                var control = this.controlList[i];
+                if (!control) { continue; }
+                if (Array.isArray(record)) {
+                    for (var j = 0; j < record.length; j++) {
+                        var recordItem = record[j];
+                        if (recordItem["@name"] === columnName) {
+                                control.setControl(recordItem);
+                                break;
+                        }
+                    }
+                } else {
+                    control.setForm(record);
+                }
+            }
+        },
+
+        showForm: function (form, model) {
             console.log("editShelter showForm");
         },
-        
-        getData: function(model) {
+
+        getData: function (model) {
             console.log("editShelter getData");
         },
 

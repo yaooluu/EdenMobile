@@ -271,6 +271,23 @@
 
         showForm: function (form, model) {
             console.log("editShelter showForm");
+            for (var i = 0; i < editShelterForm.length; i++) {
+                //var record = obj;
+                //var label = "";
+                var value = "";
+                var columnItem = editShelterForm[i];
+                var columnName = columnItem["name"];
+                //var path = columnItem["form_path"];
+                //if (!path) { continue; }
+                //var pathList = path.split("/");
+                var item = model.get(columnName);
+                if (item) {
+                    var control = this.controlList[i];
+                    if (control) {
+                        control.setData(item);
+                    }
+                }
+            }
         },
 
         getData: function (model) {

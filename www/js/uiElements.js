@@ -257,12 +257,12 @@
         setData: function (data) {
             console.log("stringControl setData");
             this._data = data;
-            this.$el.find("input").html(data);
+            this.$el.find("input").val(data);
         },
 
         getData: function () {
             console.log("stringControl getData");
-            this._data = this.$el.find("input").html();
+            this._data = this.$el.find("input").val();
             return this._data;;
         },
         reset: function() {

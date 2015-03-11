@@ -118,7 +118,7 @@
     };
 
     controller.prototype.submitPath = function (type) {
-        var path = "";
+        var path = "/cr/shelter.s3json";
 
         return path;
     };
@@ -199,7 +199,7 @@
     };
 
     controller.prototype.storeOffline = function (model, rawText) {
-        var page = app.view.getPage("page-cases");
+        //var page = app.view.getPage("page-cases");
         var path = model.getKey();
         if (!rawText) {
             rawText = JSON.stringify(model.toJSON());
@@ -248,17 +248,12 @@
 
 
     controller.prototype.onFormSubmit = function (page,model) {
-        //var form = app.controller.getFormByName("disease_case");
-        //var model = form.get("current");
-        //if (!model) {
-        //    model = form.get("current");
-        //}
         page.getData(model);
 
-        /*
         // save and submit
         this.storeOffline(model);
-        this._caseList[model.timestamp()] = model;
+        var modelList = app.controller.getRecordCollection("mShelter");
+        modelList[model.timestamp()] = model;
         
         if (app.controller.online()) {
             app.controller.submitData(model);
@@ -269,7 +264,6 @@
                 page.setCase(model);
             }
         }
-        */
         
     };
 

@@ -289,6 +289,7 @@
 
         getData: function (model) {
             console.log("editShelter getData");
+            var formData = {};
             for (var i = 0; i < editShelterForm.length; i++) {
                 var value = "";
                 var columnItem = editShelterForm[i];
@@ -298,10 +299,12 @@
                     var control = this.controlList[i];
                     if (control) {
                         var value = control.getData(item);
-                        model.set(columnName,value);
+                        formData[columnName] = value;
+                        //model.set(columnName,value);
                     }
                 }
             }
+            model.set(formData);
         },
 
         onCancel: function (event) {

@@ -247,12 +247,33 @@
     };
 
 
-    controller.prototype.onFormSubmit = function (page) {
+    controller.prototype.onFormSubmit = function (page,model) {
+        //var form = app.controller.getFormByName("disease_case");
+        //var model = form.get("current");
+        //if (!model) {
+        //    model = form.get("current");
+        //}
+        page.getData(model);
 
+        /*
+        // save and submit
+        this.storeOffline(model);
+        this._caseList[model.timestamp()] = model;
+        
+        if (app.controller.online()) {
+            app.controller.submitData(model);
+        } else {
+            app.view.changePage("page-back");
+            var page = app.view.getPage("page-cases");
+            if (page) {
+                page.setCase(model);
+            }
+        }
+        */
+        
     };
 
     controller.prototype.onUpdateSubmit = function (page) {
-
     };
 
     controller.prototype.updateAll = function () {

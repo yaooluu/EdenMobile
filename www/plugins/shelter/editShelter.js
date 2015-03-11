@@ -145,6 +145,7 @@
         tagName: "div",
         className: "se-page",
         name: "",
+        model: null,
         template: _.template(
             "<div class='fixed'>" +
             "<div class='row'>" +
@@ -271,16 +272,12 @@
 
         showForm: function (form, model) {
             console.log("editShelter showForm");
+            this.model = model;
             for (var i = 0; i < editShelterForm.length; i++) {
-                //var record = obj;
-                //var label = "";
                 var value = "";
                 var columnItem = editShelterForm[i];
                 var columnName = columnItem["name"];
-                //var path = columnItem["form_path"];
-                //if (!path) { continue; }
-                //var pathList = path.split("/");
-                var item = model.get(columnName);
+                 var item = model.get(columnName);
                 if (item) {
                     var control = this.controlList[i];
                     if (control) {
@@ -292,6 +289,19 @@
 
         getData: function (model) {
             console.log("editShelter getData");
+            for (var i = 0; i < editShelterForm.length; i++) {
+                var value = "";
+                var columnItem = editShelterForm[i];
+                var columnName = columnItem["name"];
+                var item = model.get(columnName);
+                if (item) {
+                    var control = this.controlList[i];
+                    if (control) {
+                        var value = control.getData(item);
+                        model.set(columnName,value);
+                    }
+                }
+            }
         },
 
         onCancel: function (event) {
@@ -303,7 +313,7 @@
         onSave: function (event) {
             console.log("onSave ");
             var controller = app.controller.getControllerByModel("shelter");
-            controller.onFormSubmit(this);
+            controller.onFormSubmit(this,this.model);
             //app.view.changePage("page-back");
         },
 

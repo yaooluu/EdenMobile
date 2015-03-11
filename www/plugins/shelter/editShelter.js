@@ -97,21 +97,21 @@
         },
         {
             name: "population",
-            control: "string",
+            control: "integer",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
             label: ""
         },
         {
             name: "capacity_day",
-            control: "string",
+            control: "integer",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
             label: ""
         },
         {
             name: "capacity_night",
-            control: "string",
+            control: "integer",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
             label: ""

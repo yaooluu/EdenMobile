@@ -183,6 +183,7 @@
                 this._common_name = options.common_name;
                 this._label = options.common_name;
             }
+            this._data = this._default;
 
             // Call the original constructor
             Backbone.View.apply(this, arguments);
@@ -224,18 +225,26 @@
         template: _.template(
         "<div id='<%= id %>' name='<%= name %>' data-role='fieldcontain' class='se-form-control-string'>" +
             "<label><%= label %></label>" +
-            "<input id='input' type='string' name='<%= name %>' />" +
+            "<input id='input' type='string' name='<%= name %>' value='<%= value %>' />" +
             "</div>"),
         initialize: function (options) {
             console.log("formControl intialize should not be called");
             this.reset();
         },
         render: function () {
+            var t = this.template({
+                id: this._name,
+                label: this._label,
+                name: this._name,
+                value: this._data
+
+            });
             //this.$el.attr();
             this.$el.html(this.template({
                 id: this._name,
                 label: this._label,
-                name: this._name
+                name: this._name,
+                value: this._data
 
             }));
             return this.$el;
@@ -270,6 +279,58 @@
         }
     });
 
+    var integerControl = formControl.extend({
+        _type: "integer",
+        _default: 0,
+        template: _.template(
+        "<div id='<%= id %>' name='<%= name %>' data-role='fieldcontain' class='se-form-control-string'>" +
+            "<label><%= label %></label>" +
+            "<input id='input' type='number' name='<%= name %>'  value='<%= value %>' />" +
+            "</div>"),
+        initialize: function (options) {
+            console.log("formControl intialize should not be called");
+            this.reset();
+        },
+        render: function () {
+            //this.$el.attr();
+            this.$el.html(this.template({
+                id: this._name,
+                label: this._label,
+                name: this._name,
+                value: this._data
+
+            }));
+            return this.$el;
+        },
+        
+        setControl: function(record) {
+            if (this._common_name) {
+                return;
+            }
+            if (record["@label"]) {
+                this._label = record["@label"];
+                var element = this.$el.find("label");
+                if (element.length) {
+                    element.html(this._label);
+                }
+            }
+        },
+
+        setData: function (data) {
+            console.log("integerControl setData");
+            this._data = data;
+            this.$el.find("input").val(data);
+        },
+
+        getData: function () {
+            console.log("integerControl getData");
+            this._data = this.$el.find("input").val();
+            return this._data;;
+        },
+        reset: function() {
+            this.setData(this._default);
+        }
+    });
     //--------------------------------------------------------------------------
     //
     // Dialogs
@@ -409,6 +470,7 @@
     app.view.addPage("confirmDialog", confirmDialog);
     app.view.addPage("loginDialog", loginDialog);
     app.view.addControl("string",stringControl);
+    app.view.addControl("integer",integerControl);
 
 
 })(jQuery, window, document);

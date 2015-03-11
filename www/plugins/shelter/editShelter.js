@@ -67,8 +67,11 @@
             label: ""
         },
         {
-            name: "postcode",
-            control: "string"
+            name: "addr_postcode",
+            control: "string",
+            form_path: "$_gis_location/field",
+            form: "gis-location-form",
+            label: ""
         },
         {
             name: "location",
@@ -76,11 +79,17 @@
         },
         {
             name: "phone",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "email",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "person_id",
@@ -95,15 +104,17 @@
         },
         {
             name: "capacity_day",
-            control: "string"
-        },
-        {
-            name: "evacuees_day",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "capacity_night",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "status",
@@ -114,7 +125,10 @@
         },
         {
             name: "comments",
-            control: "string"
+            control: "string",
+            form_path: "$_cr_shelter/field",
+            form: "shelter-form",
+            label: ""
         },
         {
             name: "obsolete",
@@ -176,7 +190,7 @@
                         name: controlName,
                         common_name: tableItem.common_name
                     });
-                    this.controlList.push(item);
+                    this.controlList[i] = item;
 
                 }
             }
@@ -198,7 +212,10 @@
             // Add controls
             var container = this.$el.find("#form-controls");
             for (var i = 0; i < this.controlList.length; i++) {
-                container.append(this.controlList[i].render());
+                var control = this.controlList[i];
+                if (control) {
+                container.append(control.render());
+                }
             }
 
             return this.$el;
@@ -241,7 +258,7 @@
                 if (Array.isArray(record)) {
                     for (var j = 0; j < record.length; j++) {
                         var recordItem = record[j];
-                        if (recordItem["@name"] === columnName) {
+                        if (recordItem["@name"] === control._name) {
                                 control.setControl(recordItem);
                                 break;
                         }

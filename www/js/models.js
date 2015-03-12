@@ -153,6 +153,9 @@
             for (var i = 0; i < table.length; i++) {
                 var tableItem = table[i];
                 var name = tableItem["name"];
+                if (!tableItem["form_path"]) {
+                    continue;
+                }
                 var path = tableItem["form_path"].split("/");
                 /*
                 var dataItem = rawData;

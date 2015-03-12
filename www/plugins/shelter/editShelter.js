@@ -276,16 +276,20 @@
         showForm: function (form, model) {
             console.log("editShelter showForm");
             this.model = model;
+            var tableData = model.getData(editShelterForm);
             for (var i = 0; i < editShelterForm.length; i++) {
                 var value = "";
                 var columnItem = editShelterForm[i];
                 var columnName = columnItem["name"];
-                 var item = model.get(columnName);
+                 var item = tableData[columnName];
                 if (item) {
                     var control = this.controlList[i];
                     if (control) {
                         control.setData(item);
                     }
+                }
+                else {
+                    console.log("\titem not found " + columnName);
                 }
             }
         },

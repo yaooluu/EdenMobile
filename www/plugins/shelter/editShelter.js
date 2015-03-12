@@ -30,7 +30,8 @@
             control: "string",
             form_path: "$_cr_shelter/field",
             form: "shelter-form",
-            label: ""
+            label: "",
+            required: true
         },
         {
             name: "organisation_id",
@@ -184,12 +185,14 @@
                 var tableItem = editShelterForm[i];
                 var controlName = tableItem.name;
                 var controlType = tableItem.control;
-                var control = app.view.getControl(controlType);
+                var required = tableItem.required && (tableItem.required === true);
+               var control = app.view.getControl(controlType);
                 if (control) {
                     console.log("control found " + controlType);
                     var item = new control({
                         name: controlName,
-                        common_name: tableItem.common_name
+                        common_name: tableItem.common_name,
+                        required: required
                     });
                     this.controlList[i] = item;
 

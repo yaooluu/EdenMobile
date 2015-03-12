@@ -168,6 +168,7 @@
         _label: "",
         _common_name: null,
         _default: null,
+        _required: false,
         commonEvents: {},
 
         constructor: function (options) {
@@ -182,6 +183,9 @@
             if (options.common_name) {
                 this._common_name = options.common_name;
                 this._label = options.common_name;
+            }
+            if (options.required && (options.required === true)) {
+                this._required = true;
             }
             this._data = this._default;
 
@@ -256,6 +260,9 @@
             }
             if (record["@label"]) {
                 this._label = record["@label"];
+                if (this._required) {
+                    this._label += '<bold style="color:red">*</bold>';
+                }
                 var element = this.$el.find("label");
                 if (element.length) {
                     element.html(this._label);
@@ -309,6 +316,9 @@
             }
             if (record["@label"]) {
                 this._label = record["@label"];
+                if (this._required) {
+                    this._label += '<bold style="color:red">*</bold>';
+                }
                 var element = this.$el.find("label");
                 if (element.length) {
                     element.html(this._label);

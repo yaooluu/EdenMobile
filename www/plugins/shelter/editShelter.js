@@ -71,6 +71,8 @@
             name: "addr_postcode",
             control: "string",
             form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
             form: "gis-location-form",
             label: ""
         },

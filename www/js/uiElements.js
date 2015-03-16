@@ -169,6 +169,7 @@
         _common_name: null,
         _default: null,
         _required: false,
+        _table: null,
         commonEvents: {},
 
         constructor: function (options) {

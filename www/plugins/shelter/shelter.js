@@ -149,6 +149,7 @@
             '</th>'
         ),
         content_template: null,
+        _table: shelterTable,
         events: {
             "click #link-button": "navigate",
             "click #new-item": "onNewItem",

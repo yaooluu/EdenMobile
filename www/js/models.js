@@ -78,6 +78,11 @@
             this._formId = "";
             this._serverState = 0; // 0 = not on server, 1 = server valid
             this._type = "";
+            this._table = null;
+            
+            //if (options && options.table) {
+            //    this.initData(options.type, options.table);
+            //}
 
 
             // Call the original constructor
@@ -219,6 +224,124 @@
                 }
             }
             return data;
+        },
+        
+        initData: function(form, table) {
+            var data = {};
+            for (var i = 0; i < table.length; i++) {
+                var tableItem = table[i];
+                var name = tableItem["name"];
+                if (!tableItem["form_path"]) {
+                    continue;
+                }
+                var pathList = tableItem["form_path"].split("/");
+                //var serverData = app.controller.getForm(this._type + "-form");
+                var record = form.get("obj");
+                for (var j = 0; j < pathList.length; j++) {
+                    var pathItem = pathList[j];
+
+                    if (!record[pathItem]) {
+                        record = null;
+                        break;
+                    }
+                    if (pathItem.indexOf("$_") >= 0) {
+                        record = record[pathItem][0];
+                    } else {
+                        record = record[pathItem];
+                    }
+                }
+                if (!record) {
+                    continue;
+                }
+                
+                                // find item in array
+                if (Array.isArray(record)) {
+                        var value = "";
+                    for (var j = 0; j < record.length; j++) {
+                        var recordItem = record[j];
+                        if (recordItem["@name"] === name) {
+                            //label = recordItem["@label"];
+                            var type = recordItem["@type"];
+                            switch (type) {
+                            case "string":
+                                {
+                                    value = "";
+                                }
+                                break;
+                            case "integer":
+                                {
+                                    value = "0";
+                                }
+                                break;
+                            default:
+                                {
+                                    if (type.indexOf("list:reference") >= 0) {
+                                        console.log("\ttype - " + type);
+                                    } else if (recordItem["@type"].indexOf("reference") >= 0) {
+                                        console.log("\ttype - " + type);
+                                    } else {
+                                        console.log("\ttype unknown - " + type);
+                                    }
+                                }
+                            }
+                            data[name] = value;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    continue;
+                }
+
+                if (tableItem["reference"]) {
+                    // If there is a data_path field in the table reference, then
+                    // the value is referenced from another db table, and not the
+                    // main record.  You must go back to the root of the download
+                    // and follow the data_path
+                    var referenceName = tableItem["reference"];
+                    /*
+                    var referenceRecord = rawData[referenceName];
+                    //var referenceUuid = referenceRecord["@uuid"];
+                    //var referenceResource = referenceRecord["@resource"];
+                    //var serverData = app.controller.getData(this._type);
+                    //var referenceArray = serverData["$_" + referenceResource];
+                    for (var j  = 0; j < referenceArray.length; j++) {
+                        var referenceItem = referenceArray[j];
+                        if (referenceItem["@uuid"] === referenceUuid) {
+                            if (referenceItem[name]) {
+                                data[name] = referenceItem[name]["value"];
+                            }
+                            else {
+                                data[name] = "-";
+                            }
+                            break;
+                        }
+                    }
+                    */
+                    //data[name] = name;
+                } else {
+                        /*
+                    var value = tableItem["value"];
+                    if (typeof value === "string") {
+                        data[name] = value;
+                    } else if (typeof value === "number") {
+                        data[name] = value;
+                    } else if (name.indexOf("$_") >= 0) {
+                        data[name] = value["$"];
+                    } else if (typeof value === "object") {
+                        data[name] = value["$"];
+                    } else {
+                        var reference = rawData["$k_" + name];
+                        if (reference) {
+                            data[name] = reference["$"];
+                        } else {
+                            data[name] = "unknown";
+                        }
+                    }
+                    */
+                }
+            }
+            this.set(data);
         }
 
 

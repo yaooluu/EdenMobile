@@ -278,12 +278,14 @@
 
     controller.prototype.newItem = function () {
         var form = app.controller.getForm("shelter-form");
+        var page = app.view.getPage("page-edit-shelter");
+        var pageTable = page._table;
         //var model = new mCaseData(form.get("form"));
         var modelObj = app.controller.getModel("mShelter");
-        var model = new modelObj(form.get("form"));
+        var model = new modelObj();
+        model.initData(form, page._table);
         //model.timestamp(Date.now());
         form.set("current", model);
-        var page = app.view.getPage("page-edit-shelter");
         page.showForm(form, model);
     };
 

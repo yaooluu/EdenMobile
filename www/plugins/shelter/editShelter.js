@@ -165,6 +165,7 @@
             "<div id='content'></div>"
         ),
         content_template: null,
+        _table: editShelterForm,
         events: {
             "click #link-button": "navigate",
             "click #cancel": "onCancel",

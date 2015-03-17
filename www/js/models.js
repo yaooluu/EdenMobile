@@ -184,6 +184,9 @@
                     // main record.  You must go back to the root of the download
                     // and follow the data_path
                     var referenceName = tableItem["reference"];
+                    if (!rawData) {
+                            continue;
+                    }
                     var referenceRecord = rawData[referenceName];
                     var referenceUuid = referenceRecord["@uuid"];
                     var referenceResource = referenceRecord["@resource"];
@@ -204,7 +207,16 @@
                     
                     //data[name] = name;
                 } else {
-                    var value = rawData[name];
+                    var value = undefined;
+                    if (rawData && rawData[name]) {
+                        value = rawData[name];
+                    }
+                    //else if (this.get(name)) {
+                    //        value = this.get(name);
+                    //}
+                    //else {
+                    //    continue;
+                    //}
                     if (typeof value === "string") {
                         data[name] = value;
                     } else if (typeof value === "number") {
@@ -214,12 +226,17 @@
                     } else if (typeof value === "object") {
                         data[name] = value["$"];
                     } else {
+                            if (rawData) {
                         var reference = rawData["$k_" + name];
                         if (reference) {
                             data[name] = reference["$"];
                         } else {
                             data[name] = "unknown";
                         }
+                    }
+                    else {
+                            value = "-";
+                    }
                     }
                 }
             }

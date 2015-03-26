@@ -48,7 +48,7 @@
             req: ["shelter-form", "gis-location-form"],
             page: "page-shelter"
         },
-    {
+        {
             name: "editShelterForm",
             //tableSpec: shelterTable,
             req: ["shelter-form", "gis-location-form"],
@@ -125,6 +125,88 @@
 
     controller.prototype.submitResponse = function (status, model, rawData) {
 
+        var type = model.type();
+        var response = JSON.parse(rawData);
+
+        if (response["status"] === "success") {
+
+            app.controller.updateData("shelter");
+
+            // If on new page then close
+            var currentPage = app.view.getVisiblePage();
+            if (currentPage === app.view.getPage("page-edit-shelter")) {
+                app.view.changePage("page-back");
+            }
+
+            // Update list
+            if (response.created) {
+                model.set("shelter_id", response.created[0].toString());
+            }
+            var pageCases = app.view.getPage("page-shelter");
+            if (pageCases) {
+                pageCases.setItem(model);
+            }
+
+            // Store it locally so it can be use until refresh
+            this.storeOffline(model);
+
+        } else {
+
+            if (response.hasOwnProperty("serverResponse") && (response["serverResponse"] === 0)) {
+                // The app is offline store the data locally
+                //this.storeOffline(model, rawData);
+                var currentPage = app.view.getVisiblePage();
+                if (currentPage === app.view.getPage("page-new-case")) {
+                    app.view.changePage("page-back");
+                }
+                var page = app.view.getPage("page-cases");
+                if (page) {
+                    page.setCase(model);
+                }
+
+            } else {
+                // Parse for error message
+                console.log("diseaseController error");
+                var message = response["message"];
+                var page = app.view.getVisiblePage();
+                if (page.clearErrorText) {
+                    page.clearErrorText();
+                }
+
+                for (var i in response["tree"]) {
+                    var record = response["tree"][i];
+                    if (Array.isArray(record)) {
+                        for (var j = 0; j < record.length; j++) {
+                            var recordItem = record[j];
+
+                            // Check to see if there is a message in the error field
+                            if (recordItem["@error"]) {
+                                message = recordItem["@error"];
+                                if (page.addErrorText) {
+                                    page.addErrorText(message, {
+                                        "status": "alarm"
+                                    });
+                                }
+                            }
+
+                            // Check to see if the sub records have an error message
+                            for (var k in recordItem) {
+                                var item = recordItem[k];
+                                if (item["@error"]) {
+                                    message = item["@error"];
+                                    if (page.addErrorText) {
+                                        page.addErrorText(message, {
+                                            "status": "alarm"
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     };
 
     //-------------------------------------------------------------------------
@@ -165,7 +247,7 @@
             if (model.timestamp() < timestamp) {
                 // Get data from case to put in the model
                 var formOptions = {};
-                
+
                 // TODO get the model data
                 formOptions["rawData"] = recordItem;
                 formOptions["uuid"] = uuid;
@@ -247,14 +329,14 @@
     };
 
 
-    controller.prototype.onFormSubmit = function (page,model) {
+    controller.prototype.onFormSubmit = function (page, model) {
         page.getData(model);
 
         // save and submit
         this.storeOffline(model);
         var modelList = app.controller.getRecordCollection("mShelter");
         modelList[model.timestamp()] = model;
-        
+
         if (app.controller.online()) {
             app.controller.submitData(model);
         } else {
@@ -264,11 +346,10 @@
                 page.setCase(model);
             }
         }
-        
+
     };
 
-    controller.prototype.onUpdateSubmit = function (page) {
-    };
+    controller.prototype.onUpdateSubmit = function (page) {};
 
     controller.prototype.updateAll = function () {
 

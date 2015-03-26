@@ -305,12 +305,13 @@
                 var columnItem = editShelterForm[i];
                 var columnName = columnItem["name"];
                 var item = model.get(columnName);
-                if (item) {
+                if (item !== undefined) {
                     var control = this.controlList[i];
                     if (control) {
                         var value = control.getData(item);
                         formData[columnName] = value;
                         //model.set(columnName,value);
+                        console.log("\t" + columnName + ": " + value);
                     }
                 }
             }

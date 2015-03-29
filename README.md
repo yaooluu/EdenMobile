@@ -25,18 +25,19 @@ under another directory name such as:
   ```
   git clone https://github.com/tombaker1/EdenMobile.git EdenMobile-source
   ```
+3. Set the default server url.  The url is at line 30 of www/config.js.  The default is set to demo.eden.sahanafoundation.org.  It should be set to the url of your local server such as:
+  ```
+    defaults: {
+        url: "http://localhost:8000/eden",
+  ```
 
-3. From your browser bring up the main page 
+4. From your browser bring up the main page 
 http://*web2py-server-path*/eden/static/EdenMobile/www/index.html.
 If you changed the directory name from the default then replace EdenMobile with the name that you used.
 
-4.  You will probably get an error message from the server because the application 
-is trying to access a different server.  To fix this set the server name in the application.
-Select the 'Settings' page, and enter the server path in the URL field.  Now click the 'Load' button.
-While you are there enter your user name, and password. That isn't required for viewing entries, but you need to use the user name and password that you have
-for the server to modify any entries.  
+5.  Youw will now want to set your user name and password.  That isn't required for viewing entries, but you need to use the user name and password that you have for the server to modify any entries.  Select the 'Settings' page, and enter your user name, and password. 
 
-5. That is it.  Go back to the main page and view other content 
+6. That is it.  Go back to the main page and view other content 
 such as 'Shelters'.
 
 **Creating the application**

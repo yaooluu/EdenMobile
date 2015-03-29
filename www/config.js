@@ -27,7 +27,7 @@
     debug: true,
     debugNoCommTimeout: false,
     defaults: {
-        url: "http://demo.eden.sahanafoundation.org/eden",
+        url: "http://localhost:8000/eden",
         pingPath: "/static/robots.txt",
         loginPath: "/default/user/login"  // TODO: this doesn't work
     },

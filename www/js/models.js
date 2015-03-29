@@ -188,6 +188,10 @@
                             continue;
                     }
                     var referenceRecord = rawData[referenceName];
+                    if (!referenceRecord) {
+                            data[name] = "-";
+                            continue;
+                    }
                     var referenceUuid = referenceRecord["@uuid"];
                     var referenceResource = referenceRecord["@resource"];
                     var serverData = app.controller.getData(this._type);

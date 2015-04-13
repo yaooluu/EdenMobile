@@ -1,4 +1,4 @@
-//  Copyright (c) 2014-2015 Thomas Baker
+//  Copyright (c) 2014 Thomas Baker
 //  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,48 +22,36 @@
 
 ;
 (function ($, window, document, undefined) {
-    app.config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://localhost:8000/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
+    var plugin = [
         {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
+            type: "page",
+            name: "hospital",
+            template: "hospital.htm",
+            script: "hospital.js",
+            style: "hospital.css",
+            classname: "hospitalPage",
+            backButton: true
+        },
+         {
+            type: "page",
+            name: "edit-hospital",
+            template: "editHospital.htm",
+            script: "editHospital.js",
+            classname: "editHospitalPage",
+            backButton: true
+        },
+       {
+            type: "model",
+            name: "mHospital",
+            script: "mHospital.js",
+            classname: "mHospital"
         },
         {
-            name:"Hospitals",
-            page:"page-hospital",
-            plugin:"hospital"
-        },
-        {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
+            type: "controller",
+            name: "hospitalController",
+            script: "hospitalController.js",
+            classname: "hospitalController"
         }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
-        },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
-        },
-        hospital: {
-            name:"hospital",
-            config:"config.js"
-        }
-    },
-    version: "0.1.0"
-};
-    
-    
+    ];
+    app.pluginManager.addPlugin(plugin);
 })(jQuery, window, document);

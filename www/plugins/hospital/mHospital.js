@@ -1,4 +1,4 @@
-//  Copyright (c) 2014-2015 Thomas Baker
+//  Copyright (c) 2014 Thomas Baker
 //  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,48 +22,39 @@
 
 ;
 (function ($, window, document, undefined) {
-    app.config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://localhost:8000/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
-        {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
+
+    var mFormData = app.controller.getModel("mFormData");
+    var mHospital = mFormData.extend({
+        initialize: function (options) {
+            //mFormData.prototype.initialize.call(this, arguments);
+
+            this._type = "hospital";
         },
-        {
-            name:"Hospitals",
-            page:"page-hospital",
-            plugin:"hospital"
-        },
-        {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
+
+        sendData: function () {
+            var record = {};
+            var changed = this.changed;
+            for (var key in changed) {
+                var value = changed[key];
+                record[key] = value;
+            }
+            
+            // If the model came from the server then it has a uuid
+            if (this.get("uuid")) {
+                record["@uuid"] = this.get("uuid");
+            } else {
+                var dateString = (new Date(this.timestamp())).toISOString();
+                record["@created_on"] = dateString;
+            }
+
+            var obj = {
+                $_cr_hospital: [record]
+            };
+            return JSON.stringify(obj);
         }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
-        },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
-        },
-        hospital: {
-            name:"hospital",
-            config:"config.js"
-        }
-    },
-    version: "0.1.0"
-};
+    });
+
     
-    
+    app.controller.addModel({"mHospital": mHospital});
+
 })(jQuery, window, document);

@@ -41,7 +41,9 @@
         $("#load-form-list-button").on("click",this.onLoad.bind(this));
         $("#debug-button").on("click",this.onDebug.bind(this));
         $("#Chinese-button").on("click",this.onChinese.bind(this));
-
+        $("#Bosnian-button").on("click",this.onBosnian.bind(this));
+        $("#French-button").on("click",this.onFrench.bind(this));
+        $("#English-button").on("click",this.onEnglish.bind(this));
         app.controller.setControllerByModel("languages", this);
     };
     
@@ -58,6 +60,15 @@
     };
     controller.prototype.onChinese = function(evt) {
         app.onChinese();
+    };
+    controller.prototype.onBosnian = function(evt) {
+        app.onBosnian();
+    };
+    controller.prototype.onFrench = function(evt) {
+        app.onFrench();
+    };
+    controller.prototype.onEnglish = function(evt) {
+        app.onEnglish();
     };
 
     app.pluginManager.addObject(controller);

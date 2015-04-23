@@ -53,9 +53,12 @@
             "click #reset-button": "onReset",
             "click #debug-button": "onDebug",
             "click #Chinese-button": "onChinese",
+            "click #Bosnian-button": "onBosnian",
+            "click #French-button": "onFrench",
             "change #serverURL": "onURL",
             "change #username": "onUsername",
-            "change #password": "onPassword"
+            "change #password": "onPassword",
+             "click #English-button": "onEnglish"
 
         },
         initialize: function (options) {
@@ -185,11 +188,38 @@
         onChinese: function (event) {
            // alert("Hello! I am an alert box!");
             console.log("onChinese ");       
-    var controller = app.controller.getControllerByModel("languages");
+            var controller = app.controller.getControllerByModel("languages");
             if (controller) {
                 controller.onChinese();
              //   alert("Hello! I am an alert box!");
             } 
+        },
+                onEnglish: function (event) {
+           // alert("Hello! I am an alert box!");
+            console.log("onEnglish ");       
+            var controller = app.controller.getControllerByModel("languages");
+            if (controller) {
+                controller.onEnglish();
+             //   alert("Hello! I am an alert box!");
+            } 
+        },
+        onBosnian: function (event) {
+           // alert("Hello! I am an alert box!");
+            console.log("onBosnian ");       
+            var controller = app.controller.getControllerByModel("languages");
+            if (controller) {
+                controller.onBosnian();
+             //   alert("Hello! I am an alert box!");
+            } 
+        },
+        onFrench: function (event) {
+           // alert("Hello! I am an alert box!");
+            console.log("onBosnian ");
+            var controller = app.controller.getControllerByModel("languages");
+            if (controller) {
+                controller.onFrench();
+             //   alert("Hello! I am an alert box!");
+            }
         }
 
 

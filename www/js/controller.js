@@ -162,20 +162,57 @@
         }
     }
     controller.prototype.translate = function(){
-     // alert("tets");
-  /*    var language = 'Chinese';
-      $.ajax({
+    var language = 'Chinese';
+    //alert("asd");
+    $.ajax({
         url: 'languages.xml',
         success: function(xml) {
             $(xml).find('translation').each(function(){
                 var id = $(this).attr('id');
+
                 var text = $(this).find(language).text();
-               
                 $("." + id).html(text);
             });
         }
-    });   */
-    var language = 'Chinese';
+    });
+
+    }
+
+    controller.prototype.translateToBosnian = function(){
+    var language = 'Bosnian';
+    //alert("asd");
+    $.ajax({
+        url: 'languages.xml',
+        success: function(xml) {
+            $(xml).find('translation').each(function(){
+                var id = $(this).attr('id');
+
+                var text = $(this).find(language).text();
+                $("." + id).html(text);
+            });
+        }
+    });
+
+    }
+    controller.prototype.translateToFrench = function(){
+    var language = 'French';
+    //alert("asd");
+    $.ajax({
+        url: 'languages.xml',
+        success: function(xml) {
+            $(xml).find('translation').each(function(){
+                var id = $(this).attr('id');
+
+                var text = $(this).find(language).text();
+                $("." + id).html(text);
+            });
+        }
+    });
+
+    }
+
+    controller.prototype.translateToEnglish = function(){
+    var language = 'english';
     //alert("asd");
     $.ajax({
         url: 'languages.xml',

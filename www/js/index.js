@@ -111,6 +111,18 @@ var app = {
         this.controller.translate();
 
     },
+    onBosnian: function(){
+        this.controller.translateToBosnian();
+
+    },
+    onFrench: function(){
+        this.controller.translateToFrench();
+
+    },
+        onEnglish: function(){
+        this.controller.translateToEnglish();
+
+    },
     
     onOnline: function() {
         if (this.controller) {

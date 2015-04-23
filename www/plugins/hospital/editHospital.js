@@ -33,19 +33,30 @@
             label: "",
             required: true
         },
+        ///*
         {
-            name: "organisation_id",
-            control: "select"
-        },
-        {
-            name: "hospital_type_id",
-            control: "select",
+            name: "aka1",
+            control: "string",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
             label: ""
         },
         {
-            name: "hospital_service_id",
+            name: "code",
+            control: "string",
+            form_path: "$_hms_hospital/field",
+            form: "hospital-form",
+            label: ""
+        },
+        {
+            name: "facility_type",
+            control: "integer",
+            form_path: "$_hms_hospital/field",
+            form: "hospital-form",
+            label: ""
+        },
+        {
+            name: "organisation_id",
             control: "select"
         },
         {
@@ -57,7 +68,7 @@
             form: "gis-location-form",
             common_name: "Country",
             label: ""
-       },
+        },
         {
             name: "addr_street",
             control: "string",
@@ -81,51 +92,104 @@
             control: "gis_button"
         },
         {
-            name: "phone",
-            control: "string",
-            form_path: "$_hms_hospital/field",
-            form: "hospital-form",
-            label: ""
+             name: "address",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
         },
         {
-            name: "email",
-            control: "string",
-            form_path: "$_hms_hospital/field",
-            form: "hospital-form",
-            label: ""
+             name: "postcode",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        },  
+        {
+             name: "city",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        }, 
+        {
+             name: "phone_exchange",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
         },
         {
-            name: "person_id",
-            control: "select"
+             name: "phone_business",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        },    
+        {
+             name: "phone_emergency",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
         },
         {
-            name: "population",
+             name: "website",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        },
+        {
+             name: "email",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        },   
+        {
+             name: "fax",
+             control: "string",
+             form_path: "$_hms_hospital/field",
+             form: "hospital-form",
+             label: ""
+        },   
+        /*  
+        {
+            name: "total_beds",
             control: "integer",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
             label: ""
         },
         {
-            name: "capacity_day",
+            name: "available_beds",
             control: "integer",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
             label: ""
         },
         {
-            name: "capacity_night",
+            name: "doctors",
             control: "integer",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
             label: ""
         },
         {
-            name: "status",
-            control: "select",
+            name: "nurses",
+            control: "integer",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
             label: ""
-        },
+        }, 
+        {
+            name: "non_medical_staff",
+            control: "integer",
+            form_path: "$_hms_hospital/field",
+            form: "hospital-form",
+            label: ""
+        },    
         {
             name: "comments",
             control: "string",
@@ -133,6 +197,7 @@
             form: "hospital-form",
             label: ""
         },
+        //*/
         {
             name: "obsolete",
             control: "checkbox"
@@ -141,7 +206,7 @@
             name: "footer",
             control: "text"
         }
-        ];
+    ];
 
     var pageView = app.view.getPage("pageView");
     var editHospitalsPage = pageView.extend({ //pageView.extend({

@@ -27,51 +27,55 @@
     var hospitalTable = [
         {
             name: "name",
+            control: "string",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
-            table_priority: "all",
+            label: "",
+            required: true
+        },
+        ///*
+        {
+            name: "aka1",
+            control: "string",
+            form_path: "$_hms_hospital/field",
+            form: "hospital-form",
             label: ""
         },
         {
-            name: "status",
+            name: "code",
+            control: "string",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
-            table_priority: "all",
             label: ""
         },
         {
-            name: "hospital_type_id",
+            name: "facility_type",
+            control: "integer",
             form_path: "$_hms_hospital/field",
             form: "hospital-form",
-            table_priority: "medium",
-            label: ""
-        },
-        {
-            name: "population",
-            form_path: "$_hms_hospital/field",
-            form: "hospital-form",
-            table_priority: "medium",
-            label: ""
-        },
-        {
-            name: "addr_street",
-            form_path: "$_gis_location/field",
-            data_path: "$_gis_location/field",
-            reference: "$k_location_id",
-            form: "gis-location-form",
-            table_priority: "medium",
             label: ""
         },
         {
             name: "L0",
+            control: "select",
             form_path: "$_gis_location/field",
             data_path: "$_gis_location/field",
             reference: "$k_location_id",
             form: "gis-location-form",
             common_name: "Country",
-            table_priority: "large",
             label: ""
-        }];
+        },
+        {
+            name: "addr_street",
+            control: "string",
+            form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            label: ""
+        }
+        //*/
+    ];
 
 
     var hospitalItemElement = Backbone.View.extend({ //pageView.extend({

@@ -1,4 +1,4 @@
-//  Copyright (c) 2014-2015 Thomas Baker
+//  Copyright (c) 2014 Thomas Baker
 //  
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,58 +22,44 @@
 
 ;
 (function ($, window, document, undefined) {
-    app.config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://localhost:8000/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
-        {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
-        },
-        {
-            name:"Hospitals",
-            page:"page-hospital",
-            plugin:"hospital"
-        },
-        {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
-        },
-        {
-            name:"Languages",
-            page:"page-languages",
-            plugin:"languages"
-        }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
-        },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
-        },
-        hospital: {
-            name:"hospital",
-            config:"config.js"
-        },
+    
+
+    // The actual plugin constructor
+    function controller() {
+        //console.log("settings controller");
+        this._page = null;
+    };
+
+    controller.prototype.init = function (options) {
+        //console.log("settings controller init");
+        //this._page = app.view.getPage("page-settings");
+        //var pageElement = this._page.$el;
+        //this._page.controller(this);
         
-       languages: {
-            name:"languages",
-            config:"config.js"
-        }
-    },
-    version: "0.1.0"
-};
+                
+        $("#reset-button").on("click",this.onReset.bind(this));
+        $("#load-form-list-button").on("click",this.onLoad.bind(this));
+        $("#debug-button").on("click",this.onDebug.bind(this));
+        $("#Chinese-button").on("click",this.onChinese.bind(this));
+
+        app.controller.setControllerByModel("languages", this);
+    };
     
+    controller.prototype.onLoad = function(evt) {
+        app.onLoad();
+    };
     
+    controller.prototype.onReset = function(evt) {
+        app.onReset();
+    };
+    
+    controller.prototype.onDebug = function(evt) {
+        app.onDebug();
+    };
+    controller.prototype.onChinese = function(evt) {
+        app.onChinese();
+    };
+
+    app.pluginManager.addObject(controller);
+
 })(jQuery, window, document);

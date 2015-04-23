@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+    <translation id="translation">
+        <english>Hello there, how are you?</english>
+        <Chinese>你好</Chinese>
+    </translation>
+    <translation id="Shelter">
+        <english>Eden Mobile</english>
+        <Chinese>手机</Chinese>
+    </translation>
+    <translation id="Eden Mobile">
+        <english>Eden Mobile</english>
+        <Chinese>手机</Chinese>
+    </translation>
+
+</translations>

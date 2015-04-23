@@ -107,6 +107,10 @@ var app = {
     onReset: function() {
         this.controller.resetAll();
     },
+    onChinese: function(){
+        this.controller.translate();
+
+    },
     
     onOnline: function() {
         if (this.controller) {

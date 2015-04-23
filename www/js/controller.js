@@ -21,6 +21,7 @@
 
 
 ;
+
 (function ($, window, document, undefined) {
 
     // The actual plugin constructor
@@ -159,6 +160,35 @@
         else {
             this.online(false);
         }
+    }
+    controller.prototype.translate = function(){
+     // alert("tets");
+  /*    var language = 'Chinese';
+      $.ajax({
+        url: 'languages.xml',
+        success: function(xml) {
+            $(xml).find('translation').each(function(){
+                var id = $(this).attr('id');
+                var text = $(this).find(language).text();
+               
+                $("." + id).html(text);
+            });
+        }
+    });   */
+    var language = 'Chinese';
+    //alert("asd");
+    $.ajax({
+        url: 'languages.xml',
+        success: function(xml) {
+            $(xml).find('translation').each(function(){
+                var id = $(this).attr('id');
+
+                var text = $(this).find(language).text();
+                $("." + id).html(text);
+            });
+        }
+    });
+
     }
 
     //-------------------------------------------------------------------------

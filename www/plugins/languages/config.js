@@ -22,58 +22,19 @@
 
 ;
 (function ($, window, document, undefined) {
-    app.config = {
-    developerMode: true,
-    debug: true,
-    debugNoCommTimeout: false,
-    defaults: {
-        url: "http://localhost:8000/eden",
-        pingPath: "/static/robots.txt",
-        loginPath: "/default/user/login"  // TODO: this doesn't work
-    },
-    mainMenu: [
+    var plugin = [
         {
-            name:"Shelters",
-            page:"page-shelter",
-            plugin:"shelter"
+            type: "page",
+            name: "languages",
+            template: "languages.htm",
+            script: "languages.js",
+            classname: "languagesPage",
         },
         {
-            name:"Hospitals",
-            page:"page-hospital",
-            plugin:"hospital"
-        },
-        {
-            name:"Settings",
-            page:"page-settings",
-            plugin:"settings"
-        },
-        {
-            name:"Languages",
-            page:"page-languages",
-            plugin:"languages"
+            type: "controller",
+            script: "languagesController.js",
+            classname: "languagesController"
         }
-    ],
-    plugins: {
-        settings: {
-            name:"settings",
-            config:"config.js"
-        },
-        shelter: {
-            name:"shelter",
-            config:"config.js"
-        },
-        hospital: {
-            name:"hospital",
-            config:"config.js"
-        },
-        
-       languages: {
-            name:"languages",
-            config:"config.js"
-        }
-    },
-    version: "0.1.0"
-};
-    
-    
+    ];
+    app.pluginManager.addPlugin(plugin);
 })(jQuery, window, document);

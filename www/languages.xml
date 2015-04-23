@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+    <translation id="translation">
+        <english>Hello there, how are you?</english>
+        <Chinese>你好</Chinese>
+        <Bosnian>Zdravo</Bosnian>
+        <French>Bonjour</French>
+    </translation>
+        <translation id="Shelter">
+        <english>Shelter Name</english>
+        <Chinese>避难所名称</Chinese>
+        <Bosnian>sklonište</Bosnian>
+        <French>nom de l'abri</French>
+    </translation>
+    <translation id="Address">
+        <english>Street Address</english>
+        <Chinese>地址</Chinese>
+        <Bosnian>adresa</Bosnian>
+        <French>adresse</French>
+    </translation>
+    <translation id="Postcode">
+        <english>Postcode</english>
+        <Chinese>邮编</Chinese>
+        <Bosnian>poštanski broj</Bosnian>
+        <French>code postal</French>
+    </translation>
+        <translation id="Phone">
+        <english>Phone</english>
+        <Chinese>电话</Chinese>
+        <Bosnian>telefon</Bosnian>
+        <French>téléphone</French>
+    </translation>
+        <translation id="Email">
+        <english>Email</english>
+        <Chinese>邮箱</Chinese>
+        <Bosnian>E-mail</Bosnian>
+        <French>E-mail</French>
+    </translation>
+    <translation id="Population">
+        <english>Estimated Population</english>
+        <Chinese>受灾人口</Chinese>
+        <Bosnian>pogođene populacije</Bosnian>
+        <French>la population touchée</French>
+    </translation>
+    <translation id="Day">
+        <english>Evacuees Capacity (Day and Night)</english>
+        <Chinese>容纳能力（全天）</Chinese>
+        <Bosnian>pogođene populacije (Dan i noć)</Bosnian>
+        <French>Capacité évacués(Jour et nuit)</French>
+    </translation>
+    <translation id="Night"><english>Evacuees Capacity (Night only)</english>
+        <Chinese>容纳能力（夜晚）</Chinese>
+        <Bosnian>pogođene populacije(noć)</Bosnian>
+        <French>Capacité évacués(nuit)</French>
+    </translation>
+    <translation id="Comments">
+        <english>Comments</english>
+        <Chinese>备注</Chinese>
+        <Bosnian>primjedba</Bosnian>
+        <French>commentaire</French>
+    </translation>
+
+    <translation id="Shelter1">
+        <english>Raleigh Rescue Mission</english>
+        <Chinese>罗利市救援中心</Chinese>
+        <Bosnian>Raleigh Grad U pomoć centar</Bosnian>
+        <French>Raliegh ville Aidez-Moi centre</French>
+    </translation>
+    <translation id="Address1">
+        <english>314 E Hargett St
+Raleigh, NC</english>
+        <Chinese>北卡州罗利市东哈格特街314号</Chinese>
+        <Bosnian>314 istok hargett ulica Raleigh Grad,sjever Karolina</Bosnian>
+        <French>314 est hargett rue Raleigh ville, nord caroline</French>
+    </translation>
+   <!-- <translation id="Postcode1">
+        <english>27601</english>
+        <Chinese>27601</Chinese>
+    </translation>
+    <translation id="Phone1">
+        <english>919.828.9014</english>
+        <Chinese>919.828.9014</Chinese>
+    </translation>-->s
+    <translation id="Comments1">
+        <english>No Comments</english>
+        <Chinese>无备注</Chinese>
+        <Bosnian>Bez Napomene</Bosnian>
+        <French>aucun commentaire</French>
+    </translation>
+
+</translations>

@@ -107,6 +107,22 @@ var app = {
     onReset: function() {
         this.controller.resetAll();
     },
+    onChinese: function(){
+        this.controller.translate();
+
+    },
+    onBosnian: function(){
+        this.controller.translateToBosnian();
+
+    },
+    onFrench: function(){
+        this.controller.translateToFrench();
+
+    },
+        onEnglish: function(){
+        this.controller.translateToEnglish();
+
+    },
     
     onOnline: function() {
         if (this.controller) {

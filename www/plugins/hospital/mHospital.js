@@ -48,7 +48,7 @@
             }
 
             var obj = {
-                $_cr_hospital: [record]
+                $_hms_hospital: [record]
             };
             return JSON.stringify(obj);
         }

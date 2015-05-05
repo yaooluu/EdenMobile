@@ -1,0 +1,95 @@
+"use strict";
+
+;
+(function ($, window, document, undefined) {
+
+    var formMap = new Object();
+
+    var baseURL = "http://localhost:8000/eden";
+    var urlMap = {
+        //shelter : "/cr/shelter/",
+        hospital : "/hms/hospital/"
+        //vehicle : "/vehicle/vehicle/"
+    };
+
+    var language = "en-gb";
+
+    function formGenerator() {
+        console.log("begin formGenerator");
+
+        this.init();
+    };
+
+    formGenerator.prototype.init = function () {
+        console.log("init formGenerator");
+
+        this.generateForms();
+
+    };
+
+    formGenerator.prototype.generateForms = function () {
+        for(var type in urlMap) {
+
+            var url = baseURL + urlMap[type] + "create.s3json?_language=" + language;
+            $.getJSON(
+                url,
+                function(data) {
+                    
+                    formMap[type] = [];
+
+                    $.each(data, function(key, val) {   //e.g. "$_hms_hospital" : [{...}]
+
+                        console.log("Fields from Server for: "+key);
+                        console.log(val[0]["field"]);
+
+                        for(var i in val[0]["field"]) {
+                            var f = val[0]["field"][i];     //current object in field
+                            if(f["@writable"] != null && f["@writable"] == "True" ) {
+                                
+                                var attr = new Object();
+                                attr.name = f["@name"];
+                                attr.control = f["@type"];
+                                attr.form_path = key + "/field";    //e.g. $_hms_hospital/field
+                                attr.form = type + "-form";
+                                attr.label = f["@label"];         //label is language-specific
+
+                                //console.log("+++++++++++++++++++++++++++++++++++++++++++++++ Adding attr:");
+                                //console.log(attr);
+
+                                formMap[type].push(attr); 
+                            }
+                        }
+                    })
+
+                    console.log("Form generated: ");
+                    console.log(formMap[type]);
+
+                    //fill page options
+                    $("#selectType").append("<option value='"+type+"'>"+type+"</option>");
+                }
+            );         
+        }
+    };
+
+
+
+    formGenerator.prototype.getForm = function (type) {
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in getForm for:"+type); 
+        return formMap[type];
+    };
+
+    function selectTypeChanged() {
+        console.log("in selectTypeChanged()");
+
+        var type = $("#selectType  option:selected").val();
+        console.log(type);
+    }
+
+    //var formGen = new formGenerator();
+
+    //console.log("0 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    // bind the plugin to jQuery     
+    //app.formGenerator = new formGenerator();
+
+
+})(jQuery, window, document);

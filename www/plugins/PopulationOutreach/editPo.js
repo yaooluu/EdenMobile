@@ -24,7 +24,65 @@
 (function ($, window, document, undefined) {
 
 
-    var editShelterForm = [
+    var editHouseholdForm = [
+        {
+            name: "area_id",
+            control: "select",
+            form_path: "$_po_household/field",
+           // reference: "$_po_household",
+            form: "po-household-form",
+            table_priority: "large",
+            required: true
+         },
+        {
+            name: "parent",
+            control: "select",
+            form_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            common_name: "Country",
+            table_priority: "large"
+        },
+        {
+            name: "addr_street",
+            control: "string",
+            form_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            table_priority: "medium"
+        },
+        {
+            name: "addr_postcode",
+            control: "string",
+            form_path: "$_gis_location/field",
+            reference: "$k_location_id",
+            form: "gis-location-form",
+            table_priority: "medium"
+        },
+        {
+            name: "date_visited",
+            control: "date",
+            form_path: "$_po_household/field",
+            form: "po-household-form",
+            table_priority: "medium",
+            required: true
+        },
+        {
+            name: "followup",
+            control: "checkbox",
+            form_path: "$_po_household/field",
+            form: "po-household-form",
+            table_priority: "medium"
+        },
+        {
+            name: "comments",
+            control: "string",
+            form_path: "$_po_household/field",
+            form: "po-household-form",
+            table_priority: "medium"
+        }
+ ];
+/*    var editShelterForm = [
         {
             name: "name",
             control: "string",
@@ -35,9 +93,7 @@
         },
         {
             name: "organisation_id",
-            control: "select",
-            form_path: "$_cr_shelter/field",
-            form: "organisation-form"
+            control: "select"
         },
         {
             name: "shelter_type_id",
@@ -48,15 +104,13 @@
         },
         {
             name: "shelter_service_id",
-            control: "select",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            label: ""
+            control: "select"
         },
         {
-            name: "parent",
+            name: "L0",
             control: "select",
             form_path: "$_gis_location/field",
+            data_path: "$_gis_location/field",
             reference: "$k_location_id",
             form: "gis-location-form",
             common_name: "Country",
@@ -100,10 +154,7 @@
         },
         {
             name: "person_id",
-            control: "select",
-            form_path: "$_cr_shelter/field",
-            form: "shelter-form",
-            label: ""
+            control: "select"
         },
         {
             name: "population",
@@ -148,10 +199,10 @@
             name: "footer",
             control: "text"
         }
-        ];
+        ];*/
 
     var pageView = app.view.getPage("pageView");
-    var editSheltersPage = pageView.extend({ //pageView.extend({
+    var editHouseholdPage = pageView.extend({ //pageView.extend({
         tagName: "div",
         className: "se-page",
         name: "",
@@ -162,7 +213,7 @@
             "<nav class='top-bar' data-topbar=' '>" +
             "<ul class='title-area'>" +
             "<li class='name'>" +
-            "<h1><a >New Shelter</a></h1>" +
+            "<h1><a >New Household</a></h1>" +
             "</li>" +
             "</li>" +
             "</ul>" +
@@ -172,14 +223,14 @@
             "<div id='content'></div>"
         ),
         content_template: null,
-        _table: editShelterForm,
+        _table: editHouseholdForm,
         events: {
             "click #link-button": "navigate",
             "click #cancel": "onCancel",
             "click #save": "onSave"
         },
         initialize: function (options) {
-            console.log("initialize editShelters page");
+            console.log("initialize editPo page");
             var content = options["content"];
             if (content) {
                 this.setContent(content);
@@ -191,8 +242,8 @@
 
             // Add the controls
             this.controlList = [];
-            for (var i = 0; i < editShelterForm.length; i++) {
-                var tableItem = editShelterForm[i];
+            for (var i = 0; i < editHouseholdForm.length; i++) {
+                var tableItem = editHouseholdForm[i];
                 var controlName = tableItem.name;
                 var controlType = tableItem.control;
                 var required = tableItem.required && (tableItem.required === true);
@@ -236,15 +287,15 @@
         },
 
         updateItem: function (obj) {
-            console.log("editShelter updateItem");
+            console.log("editHouseholdForm updateItem");
         },
 
         updateForm: function (obj) {
-            for (var i = 0; i < editShelterForm.length; i++) {
+            for (var i = 0; i < editHouseholdForm.length; i++) {
                 var record = obj;
                 var label = "";
                 var value = "";
-                var columnItem = editShelterForm[i];
+                var columnItem = editHouseholdForm[i];
                 var columnName = columnItem["name"];
                 var path = columnItem["form_path"];
                 if (!path) { continue; }
@@ -284,12 +335,12 @@
         },
 
         showForm: function (form, model) {
-            console.log("editShelter showForm");
+            console.log("editHouseholdForm showForm");
             this.model = model;
-            var tableData = model.getData(editShelterForm);
-            for (var i = 0; i < editShelterForm.length; i++) {
+            var tableData = model.getData(editHouseholdForm);
+            for (var i = 0; i < editHouseholdForm.length; i++) {
                 var value = "";
-                var columnItem = editShelterForm[i];
+                var columnItem = editHouseholdForm[i];
                 var columnName = columnItem["name"];
                  var item = tableData[columnName];
                 if (item) {
@@ -305,11 +356,11 @@
         },
 
         getData: function (model) {
-            console.log("editShelter getData");
+            console.log("editHouseholdForm getData");
             var formData = {};
-            for (var i = 0; i < editShelterForm.length; i++) {
+            for (var i = 0; i < editHouseholdForm.length; i++) {
                 var value = "";
-                var columnItem = editShelterForm[i];
+                var columnItem = editHouseholdForm[i];
                 var columnName = columnItem["name"];
                 var item = model.get(columnName);
                 if (item !== undefined) {
@@ -333,7 +384,7 @@
 
         onSave: function (event) {
             console.log("onSave ");
-            var controller = app.controller.getControllerByModel("shelter");
+            var controller = app.controller.getControllerByModel("po-household-form");
             controller.onFormSubmit(this,this.model);
             //app.view.changePage("page-back");
         },
@@ -360,6 +411,6 @@
 
     });
 
-    app.pluginManager.addObject(editSheltersPage);
+    app.pluginManager.addObject(editHouseholdPage);
 
 })(jQuery, window, document);

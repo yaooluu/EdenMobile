@@ -233,7 +233,6 @@
             "<input id='input' type='string' name='<%= name %>' value='<%= value %>' />" +
             "</div>"),
         initialize: function (options) {
-            console.log("formControl intialize should not be called");
             this.reset();
         },
         render: function () {
@@ -296,7 +295,6 @@
             "<input id='input' type='number' name='<%= name %>'  value='<%= value %>' />" +
             "</div>"),
         initialize: function (options) {
-            console.log("formControl intialize should not be called");
             this.reset();
         },
         render: function () {
@@ -342,6 +340,83 @@
             this.setData(this._default);
         }
     });
+    
+    var selectControl = formControl.extend({
+        _type: "string",
+        _default: 0,
+        template: _.template(
+        "<div id='<%= id %>' name='<%= name %>' data-role='fieldcontain' class='se-form-control-select'>" +
+            "<label><%= label %></label>" +
+            "<!-- input id='input' type='string' name='<%= name %>' value='<%= value %>' / -->" +
+            "<select name='<%= name %>' id='select-<%= name %>'></select>" +
+            "</div>"),
+        initialize: function (options) {
+            this.reset();
+        },
+        render: function () {
+            var t = this.template({
+                id: this._name,
+                label: this._label,
+                name: this._name,
+                value: this._data
+
+            });
+            //this.$el.attr();
+            this.$el.html(this.template({
+                id: this._name,
+                label: this._label,
+                name: this._name,
+                value: this._data
+
+            }));
+            return this.$el;
+        },
+        
+        setControl: function(record) {
+            if (!this._common_name) {
+                if (record["@label"]) {
+                    this._label = record["@label"];
+                    if (this._required) {
+                        this._label += '<bold style="color:red">*</bold>';
+                    }
+                    var element = this.$el.find("label");
+                    if (element.length) {
+                        element.html(this._label);
+                    }
+                }
+            }
+            
+            // Fill in select choices
+            var select = record.select;
+            if (select) {
+                var selectOptions = "";
+                var options = select[0]["option"];
+                for (var j = 0; j < options.length; j++) {
+                    var opt = options[j];
+                    var value = opt["@value"];
+                    var optionLabel = opt["$"] || "";
+                    selectOptions += '<option value = "' + value + '">' + optionLabel + '</option>';
+                }
+                this.$el.find("select").first().html(selectOptions);
+            }
+        },
+
+        setData: function (data) {
+            console.log("selectControl setData");
+            this._data = data;
+            this.$el.find("select").val(data);
+        },
+
+        getData: function () {
+            console.log("selectControl getData");
+            this._data = this.$el.find("select").val();
+            return this._data;;
+        },
+        reset: function() {
+            this.setData(this._default);
+        }
+    });
+
     //--------------------------------------------------------------------------
     //
     // Dialogs
@@ -482,6 +557,7 @@
     app.view.addPage("loginDialog", loginDialog);
     app.view.addControl("string",stringControl);
     app.view.addControl("integer",integerControl);
+   app.view.addControl("select",selectControl);
 
 
 })(jQuery, window, document);

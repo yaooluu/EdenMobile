@@ -22,52 +22,57 @@
     "use strict";
 
     var forms = {
-        "shelter-form": {
-            form_path: "/cr/shelter/create.s3json?options=true&references=true",
-            form_record: "$_cr_shelter"
+        "po-household-form": {
+            form_path: "/po/household/create.s3json?options=true&references=true",
+            form_record: "$_po_household"
+        },
+        "po-area-form": {
+            form_path: "/po/area/create.s3json?options=true&references=true",
+            form_record: "$_po_area"
         },
         "gis-location-form": {
             form_path: "/gis/location/create.s3json?options=true&references=true",
             form_record: "$_gis_location"
-        },
-        "organisation-form": {
-            form_path: "/org/organisation/create.s3json?options=true&references=true",
-            form_record: "$_org_organisation"
         }
     };
 
 
     var formList = {
-        "shelter": {
-            form_path: "/cr/shelter.s3json",
-            form_record: "$_cr_shelter",
-            page: "page-shelter"
-        }
+        "po-household-form": {
+            form_path: "/po/household.s3json",
+            form_record: "$_po_household",
+            page: "page-edit-household"
+        }/*,
+        "household": {
+            form_path: "/po/household.s3json",
+            form_record: "$_po_household",
+            page: "page-household"
+        }*/
     };
 
     var tableRequirements = [
+       /* {
+            name: "poTable",
+            //tableSpec: poTable,
+            req: ["po-form", "gis-location-form"],
+            page: "page-po"
+        },*/
         {
-            name: "shelterTable",
+            name: "editHouseholdForm",
             //tableSpec: shelterTable,
-            req: ["shelter-form", "gis-location-form","organisation-form"],
-            page: "page-shelter"
-        },
-        {
-            name: "editShelterForm",
-            //tableSpec: shelterTable,
-            req: ["shelter-form", "gis-location-form","organisation-form"],
-            page: "page-edit-shelter"
+            req: ["po-household-form", "po-area-form", "gis-location-form",""],
+            page: "page-edit-household"
         }];
 
     // The master application controller
     function controller() {
         //console.log("settings controller");
         this._pages = {};
-        this._formURL = "/cr/shelter/create.s3json?options=true&references=true";
+        this._formURL = formList["household-form"];
     };
 
     controller.prototype.init = function (options) {
-        console.log("shelterController init");
+        console.log("poController init");
 
         // Register models for this controller
         for (var formName in forms) {
@@ -122,7 +127,7 @@
     };
 
     controller.prototype.submitPath = function (type) {
-        var path = "/cr/shelter.s3json";
+        var path = formList["household"].formPath;
 
         return path;
     };
@@ -134,19 +139,19 @@
 
         if (response["status"] === "success") {
 
-            app.controller.updateData("shelter");
+            app.controller.updateData("household");
 
             // If on new page then close
             var currentPage = app.view.getVisiblePage();
-            if (currentPage === app.view.getPage("page-edit-shelter")) {
+            if (currentPage === app.view.getPage("page-edit-household")) {
                 app.view.changePage("page-back");
             }
 
             // Update list
             if (response.created) {
-                model.set("shelter_id", response.created[0].toString());
+                model.set("household_id", response.created[0].toString());
             }
-            var pageCases = app.view.getPage("page-shelter");
+            var pageCases = app.view.getPage("page-household");
             if (pageCases) {
                 pageCases.setItem(model);
             }
@@ -159,6 +164,7 @@
             if (response.hasOwnProperty("serverResponse") && (response["serverResponse"] === 0)) {
                 // The app is offline store the data locally
                 //this.storeOffline(model, rawData);
+                /*
                 var currentPage = app.view.getVisiblePage();
                 if (currentPage === app.view.getPage("page-new-case")) {
                     app.view.changePage("page-back");
@@ -167,10 +173,11 @@
                 if (page) {
                     page.setCase(model);
                 }
+                */
 
             } else {
                 // Parse for error message
-                console.log("diseaseController error");
+                console.log("poController error");
                 var message = response["message"];
                 var page = app.view.getVisiblePage();
                 if (page.clearErrorText) {
@@ -216,14 +223,14 @@
     //-------------------------------------------------------------------------
 
     controller.prototype.updateList = function (name, data) {
-        console.log("shelterController: updateList " + name);
+        console.log("poController: updateList " + name);
         //var page = app.view.getPage("page-cases");
         //var caseStruct = app.controller.getData("case");
-        //var serverCases = caseStruct["$_disease_case"];
+        //var serverCases = caseStruct["$_po_case"];
         var formItem = formList[name];
         var pageName = formItem["page"];
         var page = app.view.getPage(pageName);
-        var modelList = app.controller.getRecordCollection("mShelter");
+        var modelList = app.controller.getRecordCollection("mPO");
 
 
         // Initialize list server state to detect deleted items
@@ -242,7 +249,7 @@
             var model = modelList[uuid];
 
             if (!model) {
-                var modelObj = app.controller.getModel("mShelter");
+                var modelObj = app.controller.getModel("mPO");
                 model = new modelObj();
                 model.timestamp(1); // force the new data condition to be true
             }
@@ -305,7 +312,7 @@
     };
 
     controller.prototype.parseForm = function (name, obj) {
-        console.log("shelterController: parseForm " + name);
+        console.log("poController: parseForm " + name);
         //return;
         // Create a new model if one doesn't already exist
         var formRecordName = forms[name]["form_record"];
@@ -338,7 +345,7 @@
 
         // save and submit
         this.storeOffline(model);
-        var modelList = app.controller.getRecordCollection("mShelter");
+        var modelList = app.controller.getRecordCollection("mPO");
         modelList[model.timestamp()] = model;
 
         if (app.controller.online()) {
@@ -362,11 +369,11 @@
     };
 
     controller.prototype.newItem = function () {
-        var form = app.controller.getForm("shelter-form");
-        var page = app.view.getPage("page-edit-shelter");
+        var form = app.controller.getForm("po-household-form");
+        var page = app.view.getPage("page-edit-household");
         var pageTable = page._table;
         //var model = new mCaseData(form.get("form"));
-        var modelObj = app.controller.getModel("mShelter");
+        var modelObj = app.controller.getModel("mPO");
         var model = new modelObj();
         model.initData(form, page._table);
         //model.timestamp(Date.now());
@@ -375,11 +382,11 @@
     };
 
     controller.prototype.editItem = function (model) {
-        var form = app.controller.getForm("shelter-form");
-        var page = app.view.getPage("page-edit-shelter");
+        var form = app.controller.getForm("po-household-form");
+        var page = app.view.getPage("page-edit-household");
         form.set("current", model);
         page.showForm(form, model);
-        app.view.changePage("page-edit-shelter");
+        app.view.changePage("page-edit-household");
 
     };
 
